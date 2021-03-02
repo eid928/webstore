@@ -1,18 +1,31 @@
 package com.hyjiangd.webstore.entity;
 
-import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "users")
 public class User {
 	
+	@Id
+	@Column(name = "username")
 	private String username;
+	@Column(name = "password")
 	private String password;
+	@Column(name = "enabled")
 	private int enabled;
 	
-	private UserDetail userDetail;
+	@OneToOne(cascade = CascadeType.ALL, 
+			  mappedBy = "user")
+	private Authority authority;
 	
-	private List<Goods> goodsList;
-	private List<Order> sellerOrder;
-	private List<Order> buyerOrder;
+	@OneToOne(cascade = CascadeType.ALL,
+			  mappedBy = "user")
+	private UserDetail userDetail;
 	
 	public User() {
 		
@@ -48,6 +61,14 @@ public class User {
 		this.enabled = enabled;
 	}
 
+	public Authority getAuthority() {
+		return authority;
+	}
+
+	public void setAuthority(Authority authority) {
+		this.authority = authority;
+	}
+
 	public UserDetail getUserDetail() {
 		return userDetail;
 	}
@@ -56,34 +77,8 @@ public class User {
 		this.userDetail = userDetail;
 	}
 
-	public List<Goods> getGoodsList() {
-		return goodsList;
-	}
-
-	public void setGoodsList(List<Goods> goodsList) {
-		this.goodsList = goodsList;
-	}
-
-	public List<Order> getSellerOrder() {
-		return sellerOrder;
-	}
-
-	public void setSellerOrder(List<Order> sellerOrder) {
-		this.sellerOrder = sellerOrder;
-	}
-
-	public List<Order> getBuyerOrder() {
-		return buyerOrder;
-	}
-
-	public void setBuyerOrder(List<Order> buyerOrder) {
-		this.buyerOrder = buyerOrder;
-	}
-
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", enabled=" + enabled + ", userDetail="
-				+ userDetail + ", goodsList=" + goodsList + ", sellerOrder=" + sellerOrder + ", buyerOrder="
-				+ buyerOrder + "]";
+		return "User [username=" + username + ", password=" + password + ", enabled=" + enabled + "]";
 	}
 }

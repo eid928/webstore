@@ -1,11 +1,38 @@
 package com.hyjiangd.webstore.entity;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@Entity
+@Table(name = "user_details")
+@JsonIgnoreProperties("user")
 public class UserDetail {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private int id;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "username")
+	private User user;
+	
+	@Column(name = "name")
 	private String name;
+	@Column(name = "email")
 	private String email;
+	@Column(name = "address")
 	private String address;
+	@Column(name = "phone")
 	private String phone;
 	
 	public UserDetail() {
@@ -57,6 +84,14 @@ public class UserDetail {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
