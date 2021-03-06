@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "user_details")
-@JsonIgnoreProperties("user")
+@JsonIgnoreProperties({"id", "user"})
 public class UserDetail {
 	
 	@Id

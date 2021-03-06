@@ -22,10 +22,15 @@ public class UserDaoImp implements UserDao{
 		Session session = entityManager.unwrap(Session.class);
 		
 		User theUser = session.get(User.class, username);
-		System.out.println(theUser);
-		System.out.println(theUser.getAuthority());
-		System.out.println(theUser.getUserDetail());
 		
 		return theUser;
+	}
+
+	@Override
+	@Transactional
+	public void save(User user) {
+		
+		Session session = entityManager.unwrap(Session.class);
+		session.save(user);
 	}
 }

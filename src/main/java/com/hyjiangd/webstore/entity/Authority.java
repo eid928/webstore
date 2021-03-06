@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "authorities")
-@JsonIgnoreProperties({"username", "user"})
+@JsonIgnoreProperties({"user"})
 public class Authority {
 	
 	@Id
