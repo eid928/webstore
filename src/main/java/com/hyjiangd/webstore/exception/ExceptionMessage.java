@@ -1,8 +1,11 @@
 package com.hyjiangd.webstore.exception;
 
+import java.util.Date;
+
 public class ExceptionMessage {
 	
 	private int status;
+	private Date timestamp;
 	private String message;
 	
 	public ExceptionMessage() {
@@ -28,5 +31,13 @@ public class ExceptionMessage {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
 	}
 }

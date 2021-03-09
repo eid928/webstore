@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -27,12 +29,23 @@ public class UserDetail {
 	private User user;
 	
 	@Column(name = "name")
+	@NotNull(message = "請輸入姓名")
+	@Size(min = 1, message = "請輸入姓名")
 	private String name;
+	
 	@Column(name = "email")
+	@NotNull(message = "請輸入電子信箱")
+	@Size(min = 1, message = "請輸入電子信箱")
 	private String email;
+	
 	@Column(name = "address")
+	@NotNull(message = "請輸入地址")
+	@Size(min = 1, message = "請輸入地址")
 	private String address;
+	
 	@Column(name = "phone")
+	@NotNull(message = "請輸入電話")
+	@Size(min = 1, message = "請輸入電話")
 	private String phone;
 	
 	public UserDetail() {
