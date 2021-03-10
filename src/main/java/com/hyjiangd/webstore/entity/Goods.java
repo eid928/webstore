@@ -1,13 +1,50 @@
 package com.hyjiangd.webstore.entity;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@Entity
+@Table(name = "goods")
+@JsonIgnoreProperties("id")
 public class Goods {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private int id;
+	
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+	@JoinColumn(name = "seller_username")
 	private User sellerUser;
+	
+	@Column(name = "name")
+	@NotBlank
 	private String name;
+	
+	@Column(name = "price")
+	@NotBlank
 	private long price;
+	
+	@Column(name = "description")
+	@NotBlank
 	private String description;
+	
+	@Column(name = "inventories")
+	@NotBlank
 	private int inventories;
+	
+	@Column(name = "image")
+	@NotBlank
 	private String image;
 	
 	public Goods() {
