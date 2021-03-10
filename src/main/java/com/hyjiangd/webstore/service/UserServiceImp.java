@@ -3,6 +3,7 @@ package com.hyjiangd.webstore.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +19,12 @@ public class UserServiceImp implements UserService{
 	private UserDao userDao;
 	
 	@Override
-	public User findByUsername(String username) {
+	public UserDetail findLoginUserDetail() {
 		
-		return userDao.findByUsername(username);
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		System.out.println("Now login: " + username);
+		
+		return userDao.findUserDetailByUsername(username);
 	}
 
 	@Override
@@ -43,15 +47,21 @@ public class UserServiceImp implements UserService{
 	}
 
 	@Override
-	public void updateUserDetail(String username, UserDetail userDetail) {
+	public void updateLoginUserDetail(UserDetail userDetail) {
+		
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		System.out.println("Now login: " + username);
 		
 		userDao.updateUserDetail(username, userDetail);
 	}
 
 	@Override
-	public void updatePassword(String username, String password) {
+	public void updateLoginPassword(String password) {
 		
-		System.out.println("password: " + password);
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		System.out.println("Now login: " + username);
+		
+		System.out.println("new password: " + password);
 		
 		String hashedPassword = "{bcrypt}" + BCrypt.hashpw(password, BCrypt.gensalt(10));
 		System.out.println("hashedPassword: " + hashedPassword);

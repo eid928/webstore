@@ -20,7 +20,7 @@ public class UserDaoImp implements UserDao{
 	
 	@Override
 	@Transactional
-	public User findByUsername(String username) {
+	public UserDetail findUserDetailByUsername(String username) {
 		
 		Session session = entityManager.unwrap(Session.class);
 		
@@ -30,7 +30,7 @@ public class UserDaoImp implements UserDao{
 			throw new NotFoundException("Username is not found: " + username);
 		}
 		
-		return theUser;
+		return theUser.getUserDetail();
 	}
 
 	@Override

@@ -1,17 +1,24 @@
 package com.hyjiangd.webstore.entity;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties({"goodsList"})
 public class User {
 	
 	@Id
@@ -36,10 +43,16 @@ public class User {
 	private Authority authority;
 	
 	@OneToOne(cascade = CascadeType.ALL,
-			  mappedBy = "user")
+			  mappedBy = "user", 
+			  fetch = FetchType.LAZY)
 	@NotNull(message = "userdetail could not be null")
 	@Valid
 	private UserDetail userDetail;
+	
+	@OneToMany(cascade = CascadeType.ALL, 
+			   fetch = FetchType.LAZY, 
+			   mappedBy = "sellerUser")
+	private List<Goods> goodsList;
 	
 	public User() {
 		
@@ -94,5 +107,13 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [username=" + username + ", password=" + password + ", enabled=" + enabled + "]";
+	}
+
+	public List<Goods> getGoodsList() {
+		return goodsList;
+	}
+
+	public void setGoodsList(List<Goods> goodsList) {
+		this.goodsList = goodsList;
 	}
 }

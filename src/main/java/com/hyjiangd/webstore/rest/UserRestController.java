@@ -1,6 +1,5 @@
 package com.hyjiangd.webstore.rest;
 
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -8,7 +7,6 @@ import javax.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,44 +23,41 @@ public class UserRestController {
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping("/users/{username}")
-	public User findByUsername(@PathVariable String username) {
+	@GetMapping("/userdetail")
+	public UserDetail findLoginUserDetail() {
 		
-		User user = userService.findByUsername(username);
+		UserDetail userDetail = userService.findLoginUserDetail();
 		
-		return user;
+		return userDetail;
 	}
 	
-	@PostMapping("/users")
-	public User saveUser(@Valid @RequestBody User user) {
+	@PostMapping("/register")
+	public String saveUser(@Valid @RequestBody User user) {
 		
 		System.out.println("in saveUser");
-		String username = user.getUsername();
 		userService.save(user);
 		
-		
-		return userService.findByUsername(username);
+		return "已成功註冊帳號";
 	}
 	
-	@PutMapping("/userdetails/{username}")
-	public User updateUserDetail(@PathVariable String username, @Valid @RequestBody UserDetail userDetail) {
+	@PutMapping("/userdetail")
+	public UserDetail updateLoginUserDetail(@Valid @RequestBody UserDetail userDetail) {
 		
 		System.out.println("in updateUserDetail");
-		userService.updateUserDetail(username, userDetail);
+		userService.updateLoginUserDetail(userDetail);
 		
-		return userService.findByUsername(username);
+		return userService.findLoginUserDetail();
 	}
 	
-	@PutMapping("/users/{username}")
-	public User updatePassword(@PathVariable String username, 
-							   @RequestBody 
-							   @NotNull(message = "請輸入密碼")
-							   @Size(min = 6, message = "密碼不得小於六個字元") String password) {
+	@PutMapping("/userdetail/updatepassword")
+	public String updateLoginPassword(@RequestBody 
+							   		  @NotNull(message = "請輸入密碼")
+							   		  @Size(min = 6, message = "密碼不得小於六個字元") String password) {
 		
 		System.out.println("in updatePassword");
 		System.out.println("password: " + password);
-		userService.updatePassword(username, password);
+		userService.updateLoginPassword(password);
 		
-		return userService.findByUsername(username);
+		return "密碼已成功變更";
 	}
 }

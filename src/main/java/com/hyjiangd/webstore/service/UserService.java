@@ -5,8 +5,8 @@ import com.hyjiangd.webstore.entity.UserDetail;
 
 public interface UserService {
 	
-	public User findByUsername(String username);
+	public UserDetail findLoginUserDetail();
 	public void save(User user);
-	public void updateUserDetail(String username, UserDetail userDetail);
-	public void updatePassword(String username, String password);
+	public void updateLoginUserDetail(UserDetail userDetail);
+	public void updateLoginPassword(String password);
 }
