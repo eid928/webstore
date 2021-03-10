@@ -31,9 +31,13 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter{
 		http.csrf().disable();
 		http.authorizeRequests() // Restrict access based on the HttpServletRequest
 				.antMatchers("/userarea").authenticated()
+				.antMatchers("/userdetail").authenticated()
 				.anyRequest().permitAll()
 			.and()
 				.formLogin()
+				.permitAll()
+			.and()
+				.logout()
 				.permitAll();
 	}
 }
