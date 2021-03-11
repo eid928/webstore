@@ -1,5 +1,7 @@
 package com.hyjiangd.webstore.entity;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,13 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "goods")
-@JsonIgnoreProperties("id")
 public class Goods {
 	
 	@Id
@@ -25,14 +28,16 @@ public class Goods {
 	
 	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "seller_username")
-	private User sellerUser;
+	@JsonIgnoreProperties({"password", "enabled", "authority", "userDetail"})
+	private User user;
 	
 	@Column(name = "name")
 	@NotBlank
 	private String name;
 	
 	@Column(name = "price")
-	@NotBlank
+	@NotNull
+	@Min(value = 0, message = "請輸入不小於0的數字")
 	private long price;
 	
 	@Column(name = "description")
@@ -40,12 +45,15 @@ public class Goods {
 	private String description;
 	
 	@Column(name = "inventories")
-	@NotBlank
+	@NotNull
 	private int inventories;
 	
 	@Column(name = "image")
 	@NotBlank
 	private String image;
+	
+	@Column(name = "last_update_time")
+	private Date lastUpdateTime;
 	
 	public Goods() {
 		
@@ -67,12 +75,12 @@ public class Goods {
 		this.id = id;
 	}
 
-	public User getSellerUser() {
-		return sellerUser;
+	public User getUser() {
+		return user;
 	}
 
-	public void setSellerUser(User sellerUser) {
-		this.sellerUser = sellerUser;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public String getName() {
@@ -115,9 +123,17 @@ public class Goods {
 		this.image = image;
 	}
 
+	public Date getLastUpdateTime() {
+		return lastUpdateTime;
+	}
+
+	public void setLastUpdateTime(Date lastUpdateTime) {
+		this.lastUpdateTime = lastUpdateTime;
+	}
+
 	@Override
 	public String toString() {
-		return "Goods [id=" + id + ", sellerUser=" + sellerUser + ", name=" + name + ", price=" + price
-				+ ", description=" + description + ", inventories=" + inventories + ", image=" + image + "]";
+		return "Goods [id=" + id + ", name=" + name + ", price=" + price + ", description=" + description
+				+ ", inventories=" + inventories + ", image=" + image + ", lastUpdateTime=" + lastUpdateTime + "]";
 	}
 }

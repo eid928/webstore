@@ -8,5 +8,6 @@ public interface GoodsService {
 	
 	public List<Goods> findAll();
 	public List<Goods> findByUsername(String username);
-	public void save(String username, Goods goods);
+	public void postGoods(Goods goods);
+	public void updateGoods(Goods goods);
 }

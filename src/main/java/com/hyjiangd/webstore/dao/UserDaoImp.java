@@ -5,7 +5,6 @@ import javax.persistence.EntityManager;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.hyjiangd.webstore.entity.User;
 import com.hyjiangd.webstore.entity.UserDetail;
@@ -19,7 +18,6 @@ public class UserDaoImp implements UserDao{
 	private EntityManager entityManager;
 	
 	@Override
-	@Transactional
 	public UserDetail findUserDetailByUsername(String username) {
 		
 		Session session = entityManager.unwrap(Session.class);
@@ -34,7 +32,6 @@ public class UserDaoImp implements UserDao{
 	}
 
 	@Override
-	@Transactional
 	public void save(User user) {
 		
 		Session session = entityManager.unwrap(Session.class);
@@ -46,7 +43,6 @@ public class UserDaoImp implements UserDao{
 	}
 	
 	@Override
-	@Transactional
 	public void updateUserDetail(String username, UserDetail userDetail) {
 		
 		Session session = entityManager.unwrap(Session.class);
@@ -63,7 +59,6 @@ public class UserDaoImp implements UserDao{
 	}
 
 	@Override
-	@Transactional
 	public void updatePassword(String username, String password) {
 		
 		Session session = entityManager.unwrap(Session.class);

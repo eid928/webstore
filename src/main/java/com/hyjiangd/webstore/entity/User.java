@@ -51,7 +51,7 @@ public class User {
 	
 	@OneToMany(cascade = CascadeType.ALL, 
 			   fetch = FetchType.LAZY, 
-			   mappedBy = "sellerUser")
+			   mappedBy = "user")
 	private List<Goods> goodsList;
 	
 	public User() {

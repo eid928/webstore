@@ -8,5 +8,6 @@ public interface GoodsDao {
 	
 	public List<Goods> findAll();
 	public List<Goods> findByUsername(String username);
-	public void save(String username, Goods goods);
+	public void save(String usernameOfLogin, Goods goods);
+	public void update(String usernameOfLogin, Goods goods);
 }

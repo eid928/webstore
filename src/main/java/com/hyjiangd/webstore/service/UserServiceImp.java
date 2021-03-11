@@ -2,6 +2,8 @@ package com.hyjiangd.webstore.service;
 
 
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -19,6 +21,7 @@ public class UserServiceImp implements UserService{
 	private UserDao userDao;
 	
 	@Override
+	@Transactional
 	public UserDetail findLoginUserDetail() {
 		
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -28,6 +31,7 @@ public class UserServiceImp implements UserService{
 	}
 
 	@Override
+	@Transactional
 	public void save(User user) {
 		
 		UserDetail userDetail = user.getUserDetail();
@@ -47,6 +51,7 @@ public class UserServiceImp implements UserService{
 	}
 
 	@Override
+	@Transactional
 	public void updateLoginUserDetail(UserDetail userDetail) {
 		
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -56,6 +61,7 @@ public class UserServiceImp implements UserService{
 	}
 
 	@Override
+	@Transactional
 	public void updateLoginPassword(String password) {
 		
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
