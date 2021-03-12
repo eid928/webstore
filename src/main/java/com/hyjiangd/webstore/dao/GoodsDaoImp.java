@@ -5,8 +5,10 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,20 +22,37 @@ public class GoodsDaoImp implements GoodsDao{
 	@Autowired
 	private EntityManager entityManager;
 
+	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
-	public List<Goods> findAll() {
+	public List<Goods> searchGoodsByGoodsName(String goodsKeyword, String order, boolean asc, int elementInPage, int startElement) {
 		
 		Session session = entityManager.unwrap(Session.class);
-		Query<Goods> query = session.createQuery("from Goods", Goods.class);
-		List<Goods> goodsList = query.getResultList();
-		
+		List<Goods> goodsList = null;
+		try {
+			goodsList = session.createCriteria(Goods.class)
+									.add(Restrictions.like("name", "%" + goodsKeyword + "%"))
+									.addOrder(asc? Order.asc(order) : Order.desc(order))
+									.setMaxResults(elementInPage)
+									.setFirstResult(startElement)
+									.list();
+		} catch (HibernateException e) {
+			throw new RuntimeException("此搜尋條件查無結果");
+		}
 		return goodsList;
 	}
 
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
-	public List<Goods> findByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Goods> searchGoodsByGoodsSeller(String sellerKeyword, String order, boolean asc, int elementInPage, int startElement) {
+		
+		Session session = entityManager.unwrap(Session.class);
+		List<Goods> goodsList = session.createCriteria(Goods.class)
+								.add(Restrictions.like("user.username", "%" + sellerKeyword + "%"))
+								.addOrder(asc? Order.asc(order) : Order.desc(order))
+								.setMaxResults(elementInPage)
+								.setFirstResult(startElement)
+								.list();
+		return goodsList;
 	}
 
 	@Override

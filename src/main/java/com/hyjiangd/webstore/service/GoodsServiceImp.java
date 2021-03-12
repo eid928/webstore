@@ -19,9 +19,12 @@ public class GoodsServiceImp implements GoodsService{
 	
 	@Override
 	@Transactional
-	public List<Goods> findAll() {
+	public List<Goods> searchByGoodsName(String goodsKeyword, String order, boolean asc, int page) {
 		
-		return goodsDao.findAll();
+		int elementInPage = 6;
+		int startElement = (page - 1) * elementInPage;
+		
+		return goodsDao.searchGoodsByGoodsName(goodsKeyword, order, asc, elementInPage, startElement);
 	}
 
 	@Override
