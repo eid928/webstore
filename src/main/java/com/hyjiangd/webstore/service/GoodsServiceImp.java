@@ -26,12 +26,15 @@ public class GoodsServiceImp implements GoodsService{
 		
 		return goodsDao.searchGoodsByGoodsName(goodsKeyword, order, asc, elementInPage, startElement);
 	}
-
+	
 	@Override
 	@Transactional
-	public List<Goods> findByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Goods> searchByGoodsSeller(String sellerKeyword, String order, boolean asc, int page) {
+		
+		int elementInPage = 6;
+		int startElement = (page - 1) * elementInPage;
+		
+		return goodsDao.searchGoodsByGoodsSeller(sellerKeyword, order, asc, elementInPage, startElement);
 	}
 
 	@Override

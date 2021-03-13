@@ -21,13 +21,22 @@ public class GoodsRestController {
 	@Autowired
 	private GoodsService goodsService;
 	
-	@GetMapping("/searchgoods")
-	public List<Goods> showGoodsList(@RequestParam String goodsKeyword, 
-									 @RequestParam String order, 
-									 @RequestParam boolean asc, 
-									 @RequestParam int page) {
+	@GetMapping("/search/goodsname")
+	public List<Goods> showGoodsListByGoodsName(@RequestParam String goodsKeyword, 
+									 			@RequestParam String order, 
+									 			@RequestParam boolean asc, 
+									 			@RequestParam int page) {
 		
 		return goodsService.searchByGoodsName(goodsKeyword, order, asc, page);
+	}
+	
+	@GetMapping("/search/goodsseller")
+	public List<Goods> showGoodsListByGoodsSeller(@RequestParam String sellerKeyword, 
+												  @RequestParam String order, 
+												  @RequestParam boolean asc, 
+												  @RequestParam int page) {
+		
+		return goodsService.searchByGoodsSeller(sellerKeyword, order, asc, page);
 	}
 	
 	@PostMapping("/goods")
