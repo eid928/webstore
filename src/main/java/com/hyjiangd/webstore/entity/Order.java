@@ -1,23 +1,55 @@
 package com.hyjiangd.webstore.entity;
 
 import java.util.Date;
-import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@Entity
+@Table(name = "orders")
 public class Order {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column
 	private String id;
+	
+	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, 
+			  fetch = FetchType.EAGER)
+	@JoinColumn(name = "seller_username")
+	@JsonIgnoreProperties({"password", "enabled", "authority", "userDetail"})
 	private User sellerUser;
+	
+	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, 
+			  fetch = FetchType.EAGER)
+	@JoinColumn(name = "buyer_username")
+	@JsonIgnoreProperties({"password", "enabled", "authority", "userDetail"})
 	private User buyerUser;
+	
+	@Column(name = "status")
 	private int status;
-	private long total;
+	
+	@Column(name = "total")
+	private int total;
+	
+	@Column(name = "creation_time")
 	private Date creationTime;
-	private List<OrderDetail> orderDetails;
 	
 	public Order() {
 		
 	}
 
-	public Order(String id, long total) {
+	public Order(String id, int total) {
 		this.id = id;
 		this.total = total;
 	}
@@ -54,11 +86,11 @@ public class Order {
 		this.status = status;
 	}
 
-	public long getTotal() {
+	public int getTotal() {
 		return total;
 	}
 
-	public void setTotal(long total) {
+	public void setTotal(int total) {
 		this.total = total;
 	}
 
@@ -70,17 +102,9 @@ public class Order {
 		this.creationTime = creationTime;
 	}
 
-	public List<OrderDetail> getOrderDetails() {
-		return orderDetails;
-	}
-
-	public void setOrderDetails(List<OrderDetail> orderDetails) {
-		this.orderDetails = orderDetails;
-	}
-
 	@Override
 	public String toString() {
 		return "Order [id=" + id + ", sellerUser=" + sellerUser + ", buyerUser=" + buyerUser + ", status=" + status
-				+ ", total=" + total + ", creationTime=" + creationTime + ", orderDetails=" + orderDetails + "]";
+				+ ", total=" + total + ", creationTime=" + creationTime + "]";
 	}
 }

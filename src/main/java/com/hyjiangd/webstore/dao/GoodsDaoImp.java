@@ -22,6 +22,14 @@ public class GoodsDaoImp implements GoodsDao{
 	@Autowired
 	private EntityManager entityManager;
 
+	@Override
+	public Goods findById(int id) {
+		
+		Session session = entityManager.unwrap(Session.class);
+		
+		return session.get(Goods.class, id);
+	}
+
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
 	public List<Goods> searchGoodsByGoodsName(String goodsKeyword, String order, boolean asc, int elementInPage, int startElement) {

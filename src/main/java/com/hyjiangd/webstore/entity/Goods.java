@@ -38,7 +38,7 @@ public class Goods {
 	@Column(name = "price")
 	@NotNull
 	@Min(value = 0, message = "請輸入不小於0的數字")
-	private long price;
+	private int price;
 	
 	@Column(name = "description")
 	@NotBlank
@@ -59,7 +59,7 @@ public class Goods {
 		
 	}
 
-	public Goods(String name, long price, String description, int inventories, String image) {
+	public Goods(String name, int price, String description, int inventories, String image) {
 		this.name = name;
 		this.price = price;
 		this.description = description;
@@ -91,11 +91,11 @@ public class Goods {
 		this.name = name;
 	}
 
-	public long getPrice() {
+	public int getPrice() {
 		return price;
 	}
 
-	public void setPrice(long price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 
