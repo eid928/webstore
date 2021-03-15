@@ -9,7 +9,7 @@ CREATE TABLE `goods` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `seller_username` varchar(50) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
-  `price` float DEFAULT NULL,
+  `price` int(11) not null,
   `description` varchar(200) DEFAULT NULL,
   `inventories` int DEFAULT NULL,
   `image` varchar(100) DEFAULT NULL, 

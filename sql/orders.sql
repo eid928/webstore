@@ -6,11 +6,11 @@ USE `webstore`;
 
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
-  `id` varchar(20) NOT NULL,
+  `id` int(11) NOT NULL auto_increment,
   `seller_username` varchar(50) NOT NULL,
   `buyer_username` varchar(50) NOT NULL,
   `status` int default 0 comment '0: 待結帳, 1: 出貨中, 2: 完成訂單',
-  `total` float DEFAULT NULL,
+  `total` int DEFAULT NULL,
   `creation_time` DATETIME DEFAULT CURRENT_TIMESTAMP,
   
   PRIMARY KEY (`id`),
@@ -33,6 +33,6 @@ CREATE TABLE `orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 
-INSERT INTO `orders` (id, seller_username, buyer_username, total)
+INSERT INTO `orders` (seller_username, buyer_username, total)
 VALUES 
-('202103011455', 'hyjiang', 'eid928', 2000);
+('hyjiang', 'eid928', 2000);

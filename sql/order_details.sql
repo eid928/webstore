@@ -7,10 +7,10 @@ USE `webstore`;
 DROP TABLE IF EXISTS `order_details`;
 CREATE TABLE `order_details` (
   `id` INT(11) NOT NULL auto_increment,
-  `orderid` varchar(50) NOT NULL,
+  `orderid` int(11) NOT NULL,
   `goodsid` int(11) NOT NULL,
   `quantity` int default 1,
-  `subtotal` float DEFAULT NULL,
+  `subtotal` int DEFAULT NULL,
   
   PRIMARY KEY (`id`),
   
@@ -34,4 +34,4 @@ CREATE TABLE `order_details` (
 
 INSERT INTO `order_details` (orderid, goodsid, quantity, subtotal)
 VALUES 
-('202103011458', 1, 1, 2000);
+(1, 1, 1, 2000);
