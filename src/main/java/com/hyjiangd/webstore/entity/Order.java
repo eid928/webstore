@@ -22,7 +22,7 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
-	private String id;
+	private int id;
 	
 	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, 
 			  fetch = FetchType.EAGER)
@@ -38,6 +38,10 @@ public class Order {
 	
 	@Column(name = "status")
 	private int status;
+	// 0: 待結帳, 1: 出貨中, 2: 完成訂單,
+	// submit 後為0
+	// 填完付款表格後為1
+	// 收完貨為2
 	
 	@Column(name = "total")
 	private int total;
@@ -49,16 +53,11 @@ public class Order {
 		
 	}
 
-	public Order(String id, int total) {
-		this.id = id;
-		this.total = total;
-	}
-
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

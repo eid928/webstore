@@ -5,11 +5,13 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hyjiangd.webstore.entity.Order;
+import com.hyjiangd.webstore.entity.OrderDetail;
 import com.hyjiangd.webstore.service.OrderService;
 
 @RestController
@@ -30,10 +32,21 @@ public class OrderRestController {
 		return orderService.findByLoginUserAsSeller();
 	}
 	
+	@GetMapping("orders/{orderId}")
+	public Order findByOrderId(@PathVariable int orderId) {
+		
+		return orderService.findByOrderId(orderId);
+	}
+	
+	@GetMapping("orders/orderdetails/{orderId}")
+	public List<OrderDetail> findOrderDetailsByOrderId(@PathVariable int orderId) {
+		
+		return orderService.findOrderDetailsByOrderId(orderId);
+	}
+	
 	@PostMapping("orders")
 	public String summitOrder(@RequestBody List<Map<String, Integer>> cart) {
 		
-		orderService.summitOrder(cart);
-		return "已提交訂單";
+		return orderService.summitOrder(cart);
 	}
 }

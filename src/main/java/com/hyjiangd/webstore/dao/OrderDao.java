@@ -9,6 +9,8 @@ public interface OrderDao {
 	
 	public List<Order> findByUserAsBuyer(String username);
 	public List<Order> findByUserAsSeller(String username);
+	public Order findByOrderId(int orderId);
+	public List<OrderDetail> findOrderDetailsByOrderId(int orderId);
 	public void saveOrder(Order order);
 	public void saveOrderDetail(OrderDetail orderDetail);
 }

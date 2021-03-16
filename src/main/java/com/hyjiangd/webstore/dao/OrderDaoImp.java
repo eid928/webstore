@@ -41,6 +41,25 @@ public class OrderDaoImp implements OrderDao{
 	}
 
 	@Override
+	public Order findByOrderId(int orderId) {
+		
+		Session session = entityManger.unwrap(Session.class);
+		
+		return session.get(Order.class, orderId);
+	}
+
+	@Override
+	public List<OrderDetail> findOrderDetailsByOrderId(int orderId) {
+		
+		Session session = entityManger.unwrap(Session.class);
+		Query<OrderDetail> query = session.createQuery("from OrderDetail where order.id = :orderId", OrderDetail.class);
+		query.setParameter("orderId", orderId);
+		List<OrderDetail> orderDetails = query.getResultList();
+		
+		return orderDetails;
+	}
+
+	@Override
 	public void saveOrder(Order order) {
 		
 		Session session = entityManger.unwrap(Session.class);
