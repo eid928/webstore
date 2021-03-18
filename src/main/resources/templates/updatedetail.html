@@ -62,11 +62,14 @@
     			contentType : 'application/json; charset=utf-8',
     			data: JSON.stringify(data),
     			success: function(result) {
-    				alert("Success");
+    				alert("The Update has been success");
+    				window.location.href="/userarea";
     			}, 
     			error: function(result) {
+    				console.log(result.responseJSON)
     				for(var i = 0; i < result.responseJSON.errors.length; i++) {
-    					alert(result.responseJSON.errors[i].defaultMessage);
+    					console.log(result.responseJSON.errors[i].field + "ValidationMsg");
+    					validationTag = document.getElementById(result.responseJSON.errors[i].field + "ValidationMsg").innerHTML = result.responseJSON.errors[i].defaultMessage;
     				}
     			}
     		});
@@ -108,7 +111,7 @@
             	<span class="nav-link" th:text="'Welcome!  ' + ${loginUsername}"></span>
                 <a class="nav-link" href="/userarea">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Userarea</span></a>
+                    <span>Member Area</span></a>
                 <a class="nav-link" href="/logout">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Logout</span></a>
@@ -443,7 +446,7 @@
 	                    	<span class="text">modify your personal information</span>
                     	</a>
                     <div class="my-2"></div>
-                    	<a type="button" class="btn btn-danger btn-icon-split">
+                    	<a type="button" class="btn btn-info btn-icon-split">
                     		<span class="icon text-white-50">
                     			<i class="fas fa-info-circle"></i>
                     		</span>
@@ -480,7 +483,8 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Name</div>
-                                            <input type="text" class="h5 mb-0 font-weight-bold text-gray-800" id="name" value="江和穎"/>
+                                            <input type="text" class="h5 mb-0 font-weight-bold text-gray-800" id="name"/><br>
+                                            <div class="h7 mb-0" id="nameValidationMsg" style="color: red"></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -500,7 +504,8 @@
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <input type="text" class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="email"/>
+                                                    <input type="text" class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="email"/><br>
+                                                    <div class="h7 mb-0" id="emailValidationMsg" style="color: red"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -520,7 +525,8 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                 Address</div>
-                                            <input type="text" class="h5 mb-0 font-weight-bold text-gray-800" id="address"/>
+                                            <input type="text" class="h5 mb-0 font-weight-bold text-gray-800" id="address"/><br>
+                                            <div class="h7 mb-0" id="addressValidationMsg" style="color: red"></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -538,7 +544,8 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                 phone</div>
-                                            <input type="text" class="h5 mb-0 font-weight-bold text-gray-800" id="phone"/>
+                                            <input type="text" class="h5 mb-0 font-weight-bold text-gray-800" id="phone"/><br>
+                                            <div class="h7 mb-0" id="phoneValidationMsg" style="color: red"></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -552,7 +559,13 @@
 	                	<span class="icon text-white-50">
 	                    	<i class="fas fa-check"></i>
 	                    </span>
-	                    <span class="text">submit your modification</span>
+	                    <span class="text">submit</span>
+	                </a>
+	                <a type="button" class="btn btn-danger btn-icon-split" onclick="window.location.href='/userarea'">
+	                	<span class="icon text-white-50">
+	                    	<i class="fas fa-trash"></i>
+	                    </span>
+	                    <span class="text">cancel</span>
 	                </a>
 
     <!-- Bootstrap core JavaScript-->
