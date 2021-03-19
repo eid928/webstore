@@ -38,7 +38,7 @@ public class UserDaoImp implements UserDao{
 		try {
 			session.save(user);
 		} catch (Exception e) {
-			throw new AlreadyExistException("The Username: " + user.getUsername() + " has been registered");
+			throw new AlreadyExistException("此帳號: " + user.getUsername() + " 已經被註冊。");
 		}
 	}
 	

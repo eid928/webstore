@@ -1,5 +1,7 @@
 package com.hyjiangd.webstore.rest;
 
+import java.util.Date;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hyjiangd.webstore.entity.User;
 import com.hyjiangd.webstore.entity.UserDetail;
+import com.hyjiangd.webstore.message.CrudMsg;
 import com.hyjiangd.webstore.service.UserService;
 
 @RestController
@@ -32,12 +35,12 @@ public class UserRestController {
 	}
 	
 	@PostMapping("/register")
-	public String saveUser(@Valid @RequestBody User user) {
+	public CrudMsg saveUser(@Valid @RequestBody User user) {
 		
 		System.out.println("in saveUser");
 		userService.save(user);
-		
-		return "已成功註冊帳號";
+		String msg = "歡迎， " + user.getUsername() + " !\n您已成功註冊會員。";
+		return new CrudMsg(msg, new Date());
 	}
 	
 	@PutMapping("/userdetail")

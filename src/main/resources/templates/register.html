@@ -55,18 +55,23 @@
     			type: "POST", 
     			url: "http://localhost:8080/register", 
     			contentType : 'application/json; charset=utf-8',
-    			dataType: 'text',
+    			dataType: 'json',
     			data: JSON.stringify(data),
     			success: function(result) {
     				console.log(result)
-    				alert("The Register has been success");
+    				alert(result.message);
     			}, 
     			error: function(result) {
     				alert("fail")
     				console.log(result)
-    				for(var i = 0; i < result.responseJSON.errors.length; i++) {
-    					console.log(result.responseJSON.errors[i].field + "ValidationMsg");
-    					validationTag = document.getElementById(result.responseJSON.errors[i].field + "ValidationMsg").innerHTML = result.responseJSON.errors[i].defaultMessage;
+    				if(result.status === 400) {
+        				for(var i = 0; i < result.responseJSON.errors.length; i++) {
+        					console.log(result.responseJSON.errors[i].field + "ValidationMsg");
+        					document.getElementById(result.responseJSON.errors[i].field + "ValidationMsg").innerHTML = result.responseJSON.errors[i].defaultMessage;
+        				}
+    				} else {
+    					console.log(result.responseJSON.message);
+    					document.getElementById("usernameValidationMsg").innerHTML = result.responseJSON.message;
     				}
     			}
     		});
