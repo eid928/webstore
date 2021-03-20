@@ -68,22 +68,22 @@
 
             <!-- Nav Item - Login/Logout button -->
             <li class="nav-item" th:if="${loginUsername == 'anonymousUser'}">
-            	<span class="nav-link">Welcome!  visitor</span>
+            	<span class="nav-link">歡迎光臨!  訪客</span>
                 <a class="nav-link" href="/login">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Login</span></a>
+                    <span>登入</span></a>
                 <a class="nav-link" href="/register">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Register</span></a>
+                    <span>註冊會員</span></a>
             </li>
             <li class="nav-item" th:if="${loginUsername != 'anonymousUser'}">
-            	<span class="nav-link" th:text="'Welcome!  ' + ${loginUsername}"></span>
+            	<span class="nav-link" th:text="'歡迎光臨!  ' + ${loginUsername}"></span>
                 <a class="nav-link" href="/userarea">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Member Area</span></a>
+                    <span>會員專區</span></a>
                 <a class="nav-link" href="/logout">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Logout</span></a>
+                    <span>登出</span></a>
             </li>
 
             <!-- Divider -->
@@ -412,14 +412,14 @@
 	                    	<span class="icon text-white-50">
 	                    		<i class="fas fa-arrow-right"></i>
 	                    	</span>
-	                    	<span class="text">modify your personal information</span>
+	                    	<span class="text">修改會員資料</span>
                     	</a>
                     <div class="my-2"></div>
-                    	<a type="button" class="btn btn-info btn-icon-split">
+                    	<a href="/userarea/updatepassword" class="btn btn-info btn-icon-split">
                     		<span class="icon text-white-50">
                     			<i class="fas fa-arrow-right"></i>
                     		</span>
-                    		<span class="text">modify your password</span>
+                    		<span class="text">修改密碼</span>
                     	</a>
                     <div class="my-4"></div>
 
@@ -433,7 +433,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Username</div>
+                                                帳號</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${loginUsername}"> </div>
                                         </div>
                                         <div class="col-auto">
@@ -451,7 +451,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Name</div>
+                                                姓名</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800" id="name">
                                             </div>
                                         </div>
@@ -492,7 +492,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Address</div>
+                                                聯絡地址</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800" id="address"> </div>
                                         </div>
                                         <div class="col-auto">
@@ -510,7 +510,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                phone</div>
+                                                聯絡電話</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800" id="phone"> </div>
                                         </div>
                                         <div class="col-auto">

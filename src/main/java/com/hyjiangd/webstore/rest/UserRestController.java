@@ -53,14 +53,16 @@ public class UserRestController {
 	}
 	
 	@PutMapping("/userdetail/updatepassword")
-	public String updateLoginPassword(@RequestBody 
-							   		  @NotNull(message = "請輸入密碼")
-							   		  @Size(min = 6, message = "密碼不得小於六個字元") String password) {
+	public CrudMsg updateLoginPassword(@RequestBody 
+							   		   @NotNull(message = "Not allowed to be blank")
+							   		   @Size(min = 6, message = "密碼不得小於6個字元") String password) {
 		
 		System.out.println("in updatePassword");
 		System.out.println("password: " + password);
 		userService.updateLoginPassword(password);
 		
-		return "密碼已成功變更";
+		String msg = "您的密碼已成功變更";
+		
+		return new CrudMsg(msg, new Date());
 	}
 }

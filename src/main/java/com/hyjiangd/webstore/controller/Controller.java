@@ -34,8 +34,17 @@ public class Controller {
 		return "updatedetail";
 	}
 	
+	@GetMapping("/userarea/updatepassword")
+	public String showUpdateUserPasswordPage(Model model) {
+		
+		String loginUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		model.addAttribute("loginUsername", loginUsername);
+		
+		return "updatepassword";
+	}
+	
 	@GetMapping("/search")
-	public String showSearch() {
+	public String showSearchResult() {
 		return "search";
 	}
 	
