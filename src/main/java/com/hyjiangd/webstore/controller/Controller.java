@@ -44,7 +44,11 @@ public class Controller {
 	}
 	
 	@GetMapping("/search")
-	public String showSearchResult() {
+	public String showSearchResult(Model model) {
+		
+		String loginUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		model.addAttribute("loginUsername", loginUsername);
+		
 		return "search";
 	}
 	

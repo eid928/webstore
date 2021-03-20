@@ -1,6 +1,5 @@
 package com.hyjiangd.webstore.rest;
 
-import java.util.List;
 
 import javax.validation.Valid;
 
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hyjiangd.webstore.entity.Goods;
+import com.hyjiangd.webstore.message.SearchMsg;
 import com.hyjiangd.webstore.service.GoodsService;
 
 @RestController
@@ -22,7 +22,7 @@ public class GoodsRestController {
 	private GoodsService goodsService;
 	
 	@GetMapping("/search/goodsname")
-	public List<Goods> showGoodsListByGoodsName(@RequestParam String goodsKeyword, 
+	public SearchMsg<Goods> showGoodsListByGoodsName(@RequestParam String goodsKeyword, 
 									 			@RequestParam String order, 
 									 			@RequestParam boolean asc, 
 									 			@RequestParam int page) {
@@ -31,7 +31,7 @@ public class GoodsRestController {
 	}
 	
 	@GetMapping("/search/goodsseller")
-	public List<Goods> showGoodsListByGoodsSeller(@RequestParam String sellerKeyword, 
+	public SearchMsg<Goods> showGoodsListByGoodsSeller(@RequestParam String sellerKeyword, 
 												  @RequestParam String order, 
 												  @RequestParam boolean asc, 
 												  @RequestParam int page) {

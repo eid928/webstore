@@ -1,6 +1,5 @@
 package com.hyjiangd.webstore.service;
 
-import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.hyjiangd.webstore.dao.GoodsDao;
 import com.hyjiangd.webstore.entity.Goods;
+import com.hyjiangd.webstore.message.SearchMsg;
 
 @Service
 public class GoodsServiceImp implements GoodsService{
@@ -19,7 +19,7 @@ public class GoodsServiceImp implements GoodsService{
 	
 	@Override
 	@Transactional
-	public List<Goods> searchByGoodsName(String goodsKeyword, String order, boolean asc, int page) {
+	public SearchMsg<Goods> searchByGoodsName(String goodsKeyword, String order, boolean asc, int page) {
 		
 		int elementInPage = 6;
 		int startElement = (page - 1) * elementInPage;
@@ -29,7 +29,7 @@ public class GoodsServiceImp implements GoodsService{
 	
 	@Override
 	@Transactional
-	public List<Goods> searchByGoodsSeller(String sellerKeyword, String order, boolean asc, int page) {
+	public SearchMsg<Goods> searchByGoodsSeller(String sellerKeyword, String order, boolean asc, int page) {
 		
 		int elementInPage = 6;
 		int startElement = (page - 1) * elementInPage;

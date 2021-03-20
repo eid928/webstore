@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,12 +16,16 @@ import org.springframework.stereotype.Repository;
 import com.hyjiangd.webstore.entity.Goods;
 import com.hyjiangd.webstore.entity.User;
 import com.hyjiangd.webstore.exception.NotFoundException;
+import com.hyjiangd.webstore.message.SearchMsg;
 
 @Repository
 public class GoodsDaoImp implements GoodsDao{
 	
 	@Autowired
 	private EntityManager entityManager;
+	
+	@Autowired
+	private SearchMsg<Goods> searchMsg;
 
 	@Override
 	public Goods findById(int id) {
@@ -32,35 +37,60 @@ public class GoodsDaoImp implements GoodsDao{
 
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
-	public List<Goods> searchGoodsByGoodsName(String goodsKeyword, String order, boolean asc, int elementInPage, int startElement) {
+	public SearchMsg<Goods> searchGoodsByGoodsName(String goodsKeyword, String order, boolean asc, int elementInPage, int startElement) {
 		
 		Session session = entityManager.unwrap(Session.class);
+
+		long totalSearchResult = 0;
 		List<Goods> goodsList = null;
 		try {
+			totalSearchResult = (Long) session.createCriteria(Goods.class)
+									.add(Restrictions.like("name", "%" + goodsKeyword + "%"))
+									.setProjection(Projections.rowCount())
+									.uniqueResult();
+			
 			goodsList = session.createCriteria(Goods.class)
 									.add(Restrictions.like("name", "%" + goodsKeyword + "%"))
 									.addOrder(asc? Order.asc(order) : Order.desc(order))
 									.setMaxResults(elementInPage)
 									.setFirstResult(startElement)
 									.list();
+			
+			searchMsg.setTotalSearchResult(totalSearchResult);
+			searchMsg.setSearchResult(goodsList);
 		} catch (HibernateException e) {
 			throw new RuntimeException("此搜尋條件查無結果");
 		}
-		return goodsList;
+		return searchMsg;
 	}
 
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
-	public List<Goods> searchGoodsByGoodsSeller(String sellerKeyword, String order, boolean asc, int elementInPage, int startElement) {
+	public SearchMsg<Goods> searchGoodsByGoodsSeller(String sellerKeyword, String order, boolean asc, int elementInPage, int startElement) {
 		
 		Session session = entityManager.unwrap(Session.class);
-		List<Goods> goodsList = session.createCriteria(Goods.class)
-								.add(Restrictions.like("user.username", "%" + sellerKeyword + "%"))
-								.addOrder(asc? Order.asc(order) : Order.desc(order))
-								.setMaxResults(elementInPage)
-								.setFirstResult(startElement)
-								.list();
-		return goodsList;
+		
+		long totalSearchResult = 0;
+		List<Goods> goodsList = null;
+		try {
+			totalSearchResult = (Long) session.createCriteria(Goods.class)
+									.add(Restrictions.like("user.username", "%" + sellerKeyword + "%"))
+									.setProjection(Projections.rowCount())
+									.uniqueResult();
+			
+			goodsList = session.createCriteria(Goods.class)
+									.add(Restrictions.like("user.username", "%" + sellerKeyword + "%"))
+									.addOrder(asc? Order.asc(order) : Order.desc(order))
+									.setMaxResults(elementInPage)
+									.setFirstResult(startElement)
+									.list();
+			
+			searchMsg.setTotalSearchResult(totalSearchResult);
+			searchMsg.setSearchResult(goodsList);
+		} catch (HibernateException e) {
+			throw new RuntimeException("此搜尋條件查無結果");
+		}
+		return searchMsg;
 	}
 
 	@Override
