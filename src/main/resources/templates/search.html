@@ -35,13 +35,24 @@
     	function getSearchResult() {
     		let urlParams = new URLSearchParams(window.location.search);
     		var searchBy = urlParams.get('searchBy');
-    		console.log(searchBy);
+    		var searchKeyword = urlParams.get('searchKeyword');
+    		var asc = urlParams.get('asc') == null? 'false':urlParams.get('asc');
+    		var order = urlParams.get('order') == null? 'lastUpdateTime':urlParams.get('order');
+    		var page = urlParams.get('page') == null? '1': urlParams.get('page');
+
     		var uri = '';
     		if(searchBy == "seller") {
-    			uri = 'http://localhost:8080/search/goodsseller?sellerKeyword=ei&asc=false&page=1&order=lastUpdateTime';
+    			uri = 'http://localhost:8080/search/goodsseller?sellerKeyword=' + searchKeyword + 
+    																	'&asc=' + asc + 
+    																   '&page=' + page + 
+    																  '&order=' + order;
     		} else {
-    			uri = 'http://localhost:8080/search/goodsname?goodsKeyword=&asc=true&page=1&order=id';
+    			uri = 'http://localhost:8080/search/goodsname?goodsKeyword=' + searchKeyword +
+																	 '&asc=' + asc + 
+				   													'&page=' + page + 
+				  												   '&order=' + order;
     		}
+    		console.log(uri);
     		
     		$.ajax({
     			type: "GET", 
@@ -68,6 +79,18 @@
 			                			'</div>' +
 			                		'</div>' +                		                		                			                
 			            		'</div>';
+    				}
+    				for(var i = 1; i <= (result.totalSearchResult / 6) + 1; i ++) { // to produce the pagination item according to the totalSearchResult
+    					var href = window.location.href;
+    					var originPageParam = '&page=' + page;
+    					var newPageParam = '&page=' + i;
+    					var wetherActive = page == i? "active":""
+    					
+    					// 因為最初跳轉至searchResult頁面並無帶page參數
+    					href = urlParams.get('page') == null? href + newPageParam : href.replace(originPageParam, newPageParam);
+    					
+    					document.getElementById('pagination').innerHTML +=
+    							'<li class="page-item ' + wetherActive + '"><a class="page-link" href=' + href + '>' + i + '</a></li>';
     				}
     			}, 
     			error: function() {
@@ -449,6 +472,11 @@
                 <!-- /.container-fluid -->
 	                <div class="row" id="searchResultList">
 
+	                </div>
+	                <div>
+	                	<ul class="pagination" id="pagination">
+	                		
+	                	</ul>
 	                </div>
                 </div>
             </div>
