@@ -20,49 +20,55 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <script type="text/javascript">
-    	function redirectToSearchResult() {
-    		
-    		var searchKeyword = document.getElementById("searchKeyword").value;
-    		var searchBy = document.getElementById("searchBy").value;
-    		if(searchBy == "商品賣家") {
-    			searchBy = "seller";
-    		} else {
-    			searchBy = "goods";
-    		}
-    		window.location.href = "/search?searchBy=" + searchBy + "&searchKeyword=" + searchKeyword;
-    	}
-    	
+		let urlParams = new URLSearchParams(window.location.search);
+		var searchBy = urlParams.get('searchBy');
+		var searchKeyword = urlParams.get('searchKeyword');
+		var asc = urlParams.get('asc') == null? 'false':urlParams.get('asc');
+		var order = urlParams.get('order') == null? 'lastUpdateTime':urlParams.get('order');
+		var page = urlParams.get('page') == null? '1': urlParams.get('page');
+	
+		var uri = '';	
+		if(searchBy == "seller") {
+			uri = 'http://localhost:8080/search/goodsseller?sellerKeyword=' + searchKeyword + 
+																	'&asc=' + asc + 
+																   '&page=' + page + 
+																  '&order=' + order;
+		} else {
+			uri = 'http://localhost:8080/search/goodsname?goodsKeyword=' + searchKeyword +
+																 '&asc=' + asc + 
+			   													'&page=' + page + 
+			  												   '&order=' + order;
+		}
+		
+		function orderBy(newOrder) {
+			
+			var href = window.location.href;
+			var originOrderParam = '&order=' + order;
+			var newOrderParam = '&order=' + newOrder;
+			var originAscParam = '&asc=' + asc;
+			if(order === newOrder) { // order不變，做升降序切換。
+				var newAscParam = '&asc=' + (asc === 'false'? 'true':'false');
+			} else { // order改變，升降序預設為降序
+				var newAscParam = '&asc=false'
+			}
+			
+			href = urlParams.get('order') == null? href + newOrderParam : href.replace(originOrderParam, newOrderParam);
+			href = urlParams.get('asc') == null? href + newAscParam : href.replace(originAscParam, newAscParam);
+			window.location = href;
+		}
+		
     	function getSearchResult() {
-    		let urlParams = new URLSearchParams(window.location.search);
-    		var searchBy = urlParams.get('searchBy');
-    		var searchKeyword = urlParams.get('searchKeyword');
-    		var asc = urlParams.get('asc') == null? 'false':urlParams.get('asc');
-    		var order = urlParams.get('order') == null? 'lastUpdateTime':urlParams.get('order');
-    		var page = urlParams.get('page') == null? '1': urlParams.get('page');
-
-    		var uri = '';
-    		if(searchBy == "seller") {
-    			uri = 'http://localhost:8080/search/goodsseller?sellerKeyword=' + searchKeyword + 
-    																	'&asc=' + asc + 
-    																   '&page=' + page + 
-    																  '&order=' + order;
-    		} else {
-    			uri = 'http://localhost:8080/search/goodsname?goodsKeyword=' + searchKeyword +
-																	 '&asc=' + asc + 
-				   													'&page=' + page + 
-				  												   '&order=' + order;
-    		}
-    		console.log(uri);
     		
+    		console.log('uri = ' + uri);
     		$.ajax({
     			type: "GET", 
     			url: uri, 
     			dataType: "json",
     			success: function(result) {
     				console.log(result.searchResult);
-    				document.getElementById("summaryOfSearch").innerHTML = '關於"' + urlParams.get('searchKeyword') + '"的搜尋結果共有' + result.totalSearchResult + '筆';
+    				document.getElementById("summaryOfSearch").innerHTML = '關於"' + searchKeyword + '"的搜尋結果共有' + result.totalSearchResult + '筆';
     				for(var i = 0; i < result.searchResult.length; i++) {
-    					console.log(result.searchResult[i].name);
+    					
     					document.getElementById('searchResultList').innerHTML += 
 		                		'<div class="col-lg-4">' +
 			                		'<div class="card mb-4 py-3 border-bottom-primary">' +
@@ -75,22 +81,23 @@
 			                				'<h5>' +
 			                				'$ ' + result.searchResult[i].price +
 			                				'</h5>' +
+			                				'<a href="/cart?id=' + result.searchResult[i].id + '">加進購物車</a>'+
 			                				'</div>' +
 			                			'</div>' +
 			                		'</div>' +                		                		                			                
 			            		'</div>';
     				}
-    				for(var i = 1; i <= (result.totalSearchResult / 6) + 1; i ++) { // to produce the pagination item according to the totalSearchResult
+    				for(var i = 0; i < (result.totalSearchResult / 6); i ++) { // to produce the pagination item according to the totalSearchResult
     					var href = window.location.href;
     					var originPageParam = '&page=' + page;
-    					var newPageParam = '&page=' + i;
-    					var wetherActive = page == i? "active":""
+    					var newPageParam = '&page=' + (i+1);
+    					var wetherActive = page == (i+1)? "active":""
     					
     					// 因為最初跳轉至searchResult頁面並無帶page參數
     					href = urlParams.get('page') == null? href + newPageParam : href.replace(originPageParam, newPageParam);
     					
     					document.getElementById('pagination').innerHTML +=
-    							'<li class="page-item ' + wetherActive + '"><a class="page-link" href=' + href + '>' + i + '</a></li>';
+    							'<li class="page-item ' + wetherActive + '"><a class="page-link" href=' + href + '>' + (i+1) + '</a></li>';
     				}
     			}, 
     			error: function() {
@@ -98,11 +105,20 @@
     			}
     		});
     	}
+    	
+    	function switchOrderIcon() {
+    		var node = document.getElementById(order);
+    		var arrow = asc === 'false'? 'down':'up';
+    		console.log(node.className);
+    		node.className = 'btn btn-primary btn-icon-split';
+    		
+    		node.innerHTML += '<span class="icon text-white-50"><i class="fas fa-arrow-' + arrow + '"></i></span>';
+    	}
     </script>
 
 </head>
 
-<body id="page-top" onload="getSearchResult()">
+<body id="page-top" onload="getSearchResult(); switchOrderIcon()">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -261,16 +277,16 @@
 
                     <!-- Topbar Search -->
                     <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" action="/search" method="get">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2" id="searchKeyword">
+                                aria-label="Search" aria-describedby="basic-addon2" id="searchKeyword" name="searchKeyword">
                             <div class="input-group-append">
-                                <select class="form-control bg-light small" id="searchBy">
-                            		<option>商品標題</option>
-                            		<option>商品賣家</option>
+                                <select class="form-control bg-light small" id="searchBy" name="searchBy">
+                            		<option value="goods">商品標題</option>
+                            		<option value="seller">商品賣家</option>
                             	</select>
-                                <button class="btn btn-primary" type="button" onclick="redirectToSearchResult();">
+                                <button class="btn btn-primary" type="submit">
                                     <i class="fas fa-search fa-sm"></i>
                                 </button>
                             </div>
@@ -465,8 +481,16 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800" id="summaryOfSearch"></h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                        <div class="row">
+                        	<a class="btn btn-secondary btn-icon-split" id="lastUpdateTime" onclick="orderBy('lastUpdateTime');">
+
+                                <span class="text">更新時間</span>
+
+                            </a>
+                            <a class="btn btn-secondary btn-icon-split" id="price" onclick="orderBy('price');">
+                                <span class="text">價格</span>
+                            </a>
+                        </div>
                     </div>
                 
                 <!-- /.container-fluid -->
