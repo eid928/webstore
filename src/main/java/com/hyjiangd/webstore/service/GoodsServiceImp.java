@@ -19,6 +19,13 @@ public class GoodsServiceImp implements GoodsService{
 	
 	@Override
 	@Transactional
+	public Goods findById(int id) {
+		
+		return goodsDao.findById(id);
+	}
+	
+	@Override
+	@Transactional
 	public SearchMsg<Goods> searchByGoodsName(String goodsKeyword, String order, boolean asc, int page) {
 		
 		int elementInPage = 6;
