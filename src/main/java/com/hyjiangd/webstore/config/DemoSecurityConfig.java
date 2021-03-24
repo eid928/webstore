@@ -34,6 +34,7 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers("/userdetail/**").authenticated()
 				.antMatchers("/goods/**").authenticated()
 				.antMatchers("/orders/**").authenticated()
+				.antMatchers("/sellgoods/**").authenticated()
 				.anyRequest().permitAll()
 			.and()
 				.formLogin()
