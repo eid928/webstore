@@ -68,6 +68,15 @@ public class Controller {
 		return "search";
 	}
 	
+	@GetMapping("/goodsdetail")
+	public String showGoodsDetailPage(Model model) {
+		
+		String loginUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		model.addAttribute("loginUsername", loginUsername);
+		
+		return "goodsdetail";
+	}
+	
 	@SuppressWarnings("unchecked")
 	@GetMapping("/cart")
 	public String addItemToCart(HttpServletRequest request) {
@@ -132,11 +141,21 @@ public class Controller {
 				total += goods.getPrice() * quantity;
 			}
 		}
+		
 		model.addAttribute("cart", cart);
 		model.addAttribute("total", total);
 		System.out.println("詳細購物車內有: " + cart);
 		
 		return "showcart";
+	}
+	
+	@GetMapping("/sellgoods")
+	public String saveCart(Model model) {
+		
+		String loginUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		model.addAttribute("loginUsername", loginUsername);
+		
+		return "sellgoods";
 	}
 	
 	@GetMapping("/login")
