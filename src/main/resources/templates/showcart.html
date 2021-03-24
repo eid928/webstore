@@ -19,6 +19,32 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    
+    <style type="text/css">
+	    .frame {  
+	    height: 180px; /*can be anything*/
+	    width: 300px; /*can be anything*/
+	    left: 10px;
+	    position: relative;
+	    border-style: solid;
+	    border-color: gray;
+	    border-width: 1px;
+		}
+		
+		.goodsimg {
+		    max-height: 100%;  
+		    max-width: 100%; 
+		    width: auto;
+		    height: auto;
+		    position: absolute;  
+		    top: 0;  
+		    bottom: 0;  
+		    left: 0;  
+		    right: 0;  
+		    margin: auto;
+		}
+    </style>
+    
     <script type="text/javascript">
     	function caculate(id, price, quantity) {
     		console.log("subtotal_" + id);
@@ -39,6 +65,28 @@
     		
     		document.getElementById("subtotal_" + id).innerHTML = newSubtotal;
     		document.getElementById("total").innerHTML = total;
+    	}
+    	
+    	function savecart() {
+    		
+    		var uri = 'http://localhost:8080/savecart';
+    		var data = {
+    				"goodsId": 100,
+    				"quantity": 100
+    		};
+    		console.log('uri = ' + uri);
+    		$.ajax({
+    			type: "POST", 
+    			url: uri, 
+    			contentType : 'application/json; charset=utf-8',
+    			data: JSON.stringify(data),
+    			success: function(result) {
+
+    			}, 
+    			error: function() {
+    				alert("fail");
+    			}
+    		});
     	}
     </script>
 
@@ -125,7 +173,7 @@
 
             <!-- Nav Item - cart -->
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="/sellgoods">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>管理賣場</span>
                 </a>
@@ -379,17 +427,20 @@
                     	<h1 class="h3 mb-0 text-gray-800">您的購物車: 
                         <input type="hidden" id="cartLength" th:value="${#lists.size(cart)}">
                         </h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
                     <div class="row">
+                    	
 						<div class="col-lg-4" th:each="item, itemStat : ${cart}">
-							<div class="card mb-4 py-3 border-bottom-primary">
+							<div class="card mb-4 border-bottom-primary">
+								<div class="card-header py-3">
+	                				<h4 class="m-0 font-weight-bold text-primary" id="name" th:text="${item.goods.name}"></h4>
+	                			</div>
 								<div class="card-body row">
-									<img src="image/noimg.jpg" style="width: 300px; padding-right: 10px; padding-left: 10px;">
-									<div class="col" th:id="${itemStat.index}">
+									<div class="frame">
+										<img class="goodsimg" th:src="'image/' + ${item.goods.image}">
+									</div>
+									<div class="col" th:id="${itemStat.index}" style="left: 10px;">
 										<input type="hidden" name="goodsid" th:value="${item.goods.id}">
-										<h5 th:text="'名稱: ' + ${item.goods.name}"></h5>
 										<h5 th:text="'單價: ' + ${item.goods.price}"></h5>
 										<h5>數量: 
 										<input type="number" style="width: 50px;" name="quantity" th:value="${item.quantity}" th:onblur="'caculate(' + ${item.goods.id} + ', ' + ${item.goods.price} + ', this.value)'">
@@ -403,8 +454,8 @@
 									</span>
 								</div>
 							</div>
-							
 						</div>
+						
 					</div>
 					<hr>
 					<div style="float: right; padding-bottom: 20px;">
