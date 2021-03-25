@@ -106,12 +106,12 @@
 			                			'<div class="card-body row">' +
 			                				'<a href="/goodsdetail?id=' + result.searchResult[i].id + '">' +
 			                				'<div class="frame">' + 
-			                				'<img class="goodsimg" src="image/' + result.searchResult[i].image + '">' +
+			                				'<img class="goodsimg" src="dynamic/images/' + result.searchResult[i].image + '">' +
 			                				'</div>' +
 			                				'</a>' +
 			                				'<div class="col" style="left: 10px">' +
 			                				'<h6>' +
-			                				'上次更新時間: ' + '<br>' + date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay() + ' ' + date.getHours() + ':' + date.getMinutes() +
+			                				'上次更新時間: ' + '<br>' + result.searchResult[i].lastUpdateTime +
 			                				'</h6>' + '<br>' + '<br>' + '<br>' +
 			                				'<h5 style="color: red">' +
 			                				'$' + result.searchResult[i].price +

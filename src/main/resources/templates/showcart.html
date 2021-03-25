@@ -433,12 +433,23 @@
 						<div class="col-lg-4" th:each="item, itemStat : ${cart}">
 							<div class="card mb-4 border-bottom-primary">
 								<div class="card-header py-3">
-	                				<h4 class="m-0 font-weight-bold text-primary" id="name" th:text="${item.goods.name}"></h4>
+	                				
+	                				<span class="m-0 font-weight-bold text-primary h4" id="name" th:text="${item.goods.name}"></span>
+	                				
+	                				<span style="float: right;">
+		                				<a th:href="'remove?id=' + ${item.goods.id}" class="btn btn-danger btn-circle btn-sm" style="font-weight: bolder;">
+			                				X
+		                				</a>
+	                				</span>
 	                			</div>
 								<div class="card-body row">
+									
 									<div class="frame">
-										<img class="goodsimg" th:src="'image/' + ${item.goods.image}">
+										<a th:href="'/goodsdetail?id=' + ${item.goods.id}">
+											<img class="goodsimg" th:src="'dynamic/images/' + ${item.goods.image}">
+										</a>
 									</div>
+									
 									<div class="col" th:id="${itemStat.index}" style="left: 10px;">
 										<input type="hidden" name="goodsid" th:value="${item.goods.id}">
 										<h5 th:text="'單價: ' + ${item.goods.price}"></h5>

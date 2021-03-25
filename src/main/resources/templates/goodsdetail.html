@@ -27,7 +27,6 @@
 	    left: 10px;
 	    position: relative;
 	    border-style: solid;
-	    border-color: gray;
 	    border-width: 1px;
 		}
 		.goodsimg {  
@@ -63,7 +62,7 @@
     				
     				var date = new Date(result.lastUpdateTime);
     				
-    				console.log(result)
+    				console.log(result.lastUpdateTime);
     				document.getElementById("name").innerHTML = result.name;
     				document.getElementById("inventories").innerHTML = result.inventories;
     				document.getElementById("price").innerHTML = '$' + result.price;
@@ -72,7 +71,7 @@
     				document.getElementById("cart").href = '/cart?id=' + result.id;
     				document.getElementById("lastUpdateTime").innerHTML = '上次更新時間: ' + date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay() + ' ' + date.getHours() + ':' + date.getMinutes();
     				document.getElementById("description").innerHTML = result.description;
-    				document.getElementById("image").src = 'image/' + result.image;
+    				document.getElementById("image").src = 'dynamic/images/' + result.image;
     			}, 
     			error: function() {
     				alert("fail");
@@ -423,22 +422,23 @@
 	                				<h4 class="m-0 font-weight-bold text-primary" id="name"></h4>
 	                			</div>
 			                	<div class="card-body row">
-			                	<div class="frame">
-			                	<img class="goodsimg" id="image" src="image/noimg.jpg">
-			                	</div>
-			                	<div class="col" style="border: 50px; left: 10px; padding-right: 20px;">
-			                	<div class="text-gray-900 h5" style="padding:10px; border-radius: 5px; background-color: rgb(206, 214, 234)">
-			                	<span style="padding: 5px;">庫存: </span><span class="h3" style="padding: 5px; color: red;" id="inventories"></span><br>
-			                	<span style="padding: 5px;">單價: </span><span class="h3" style="padding: 5px; color: red;" id="price"></span><br>
-			                	<span style="padding: 5px;">賣家: </span><span class="h3" style="padding: 5px;"><a href="#" id="username"></a></span>
-			                	</div>
-			                	<span><a href="/cart?id=5" id="cart">加進購物車</a></span>
-			                	<span style="float: right;" id="lastUpdateTime"></span>
-			                	<br>
-			                	<br>
-			                	<div class="text-gray-900 h6" style="padding: 10px; border-style: solid;" id="description">
-			                	</div>
-			                	</div>
+				                	<div class="frame form-control">
+				                		<img class="goodsimg" id="image" src="image/noimg.jpg">
+				                	</div>
+				                	<div class="col" style="border: 50px; left: 10px; padding-right: 20px;">
+					                	<div class="text-gray-900 h5" style="padding:10px; border-radius: 5px; background-color: rgb(206, 214, 234)">
+						                	<span style="padding: 5px;">庫存: </span><span class="h3" style="padding: 5px; color: red;" id="inventories"></span><br>
+						                	<span style="padding: 5px;">單價: </span><span class="h3" style="padding: 5px; color: red;" id="price"></span><br>
+						                	<span style="padding: 5px;">賣家: </span><span class="h3" style="padding: 5px;"><a href="#" id="username"></a></span>
+					                	</div>
+					                	<span><a href="/cart?id=5" id="cart">加進購物車</a></span>
+					                	<span style="float: right;" id="lastUpdateTime"></span>
+					                	<br>
+					                	<br>
+					                	商品說明：
+					                	<textarea class="text-gray-900 h6 form-control" rows="14" style="padding: 10px; border-style: solid;" id="description">
+					                	</textarea>
+				                	</div>
 			                	</div>
 		                	</div>
 	                	</div>
