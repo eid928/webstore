@@ -1,6 +1,8 @@
 package com.hyjiangd.webstore.rest;
 
 
+import java.util.Date;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hyjiangd.webstore.entity.Goods;
+import com.hyjiangd.webstore.message.CrudMsg;
 import com.hyjiangd.webstore.message.SearchMsg;
 import com.hyjiangd.webstore.service.GoodsService;
 
@@ -26,7 +29,7 @@ public class GoodsRestController {
 	public Goods showGoodsById(@PathVariable int goodsId) {
 		
 		Goods goods = goodsService.findById(goodsId);
-		System.out.println(goods.getLastUpdateTime());
+		System.out.println(goods.getLastUpdateTime().getClass());
 		
 		return goods;
 	}
@@ -50,18 +53,20 @@ public class GoodsRestController {
 	}
 	
 	@PostMapping("/goods")
-	public String postGoods(@RequestBody @Valid Goods goods) {
+	public CrudMsg postGoods(@RequestBody @Valid Goods goods) {
 		
 		goodsService.postGoods(goods);
+		String msg = "已成功新增商品";
 		
-		return "已新增商品";
+		return new CrudMsg(msg, new Date());
 	}
 	
 	@PutMapping("/goods")
-	public String updateGoods(@RequestBody @Valid Goods goods) {
+	public CrudMsg updateGoods(@RequestBody @Valid Goods goods) {
 		
 		goodsService.updateGoods(goods);
+		String msg = "已成功更新商品";
 		
-		return "已更新商品";
+		return new CrudMsg(msg, new Date());
 	}
 }

@@ -31,8 +31,12 @@ public class GoodsDaoImp implements GoodsDao{
 	public Goods findById(int id) {
 		
 		Session session = entityManager.unwrap(Session.class);
+		Goods goods = session.get(Goods.class, id);
 		
-		return session.get(Goods.class, id);
+		System.out.println("從hibernate session取出來的: " + goods.getLastUpdateTime().getClass());
+		System.out.println("從hibernate session取出來的: " + goods.getLastUpdateTime());
+		
+		return goods;
 	}
 
 	@SuppressWarnings({ "deprecation", "unchecked" })
@@ -103,7 +107,8 @@ public class GoodsDaoImp implements GoodsDao{
 		Date now = new Date();
 		
 		goods.setLastUpdateTime(now);
-		System.out.println(goods.getLastUpdateTime());
+		System.out.println("即將存進hibernate session中的: " + goods.getLastUpdateTime().getClass());
+		System.out.println("即將存進hibernate session中的: " + goods.getLastUpdateTime());
 		session.saveOrUpdate(goods);
 	}
 
