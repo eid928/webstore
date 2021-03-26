@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -37,7 +38,8 @@ public class Goods {
 	
 	@Column(name = "price")
 	@NotNull
-	@Min(value = 0, message = "請輸入不小於0的數字")
+	@Min(value = 10, message = "單價不得小於10元")
+	@Max(value = 999999, message = "單價不得大於999999元")
 	private int price;
 	
 	@Column(name = "description")
@@ -46,6 +48,8 @@ public class Goods {
 	
 	@Column(name = "inventories")
 	@NotNull
+	@Min(value = 1, message = "庫存不得小於1")
+	@Max(value = 999999, message = "庫存不得大於999999")
 	private int inventories;
 	
 	@Column(name = "image")
