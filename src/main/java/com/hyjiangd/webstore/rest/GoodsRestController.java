@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,6 +67,15 @@ public class GoodsRestController {
 		
 		goodsService.updateGoods(goods);
 		String msg = "已成功更新商品";
+		
+		return new CrudMsg(msg, new Date());
+	}
+	
+	@DeleteMapping("/goods/{id}")
+	public CrudMsg deleteGoods(@PathVariable int id) {
+		
+		goodsService.deleteGoods(id);
+		String msg = "已成功下架商品";
 		
 		return new CrudMsg(msg, new Date());
 	}

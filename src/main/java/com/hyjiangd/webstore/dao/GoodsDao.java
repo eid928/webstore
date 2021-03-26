@@ -11,4 +11,5 @@ public interface GoodsDao {
 	public SearchMsg<Goods> searchGoodsByGoodsSeller(String sellerKeyword, String order, boolean asc, int elementInPage, int startElement);
 	public void save(String usernameOfLogin, Goods goods);
 	public void update(String usernameOfLogin, Goods goods);
+	public void delete(String usernameOfLogin, int id);
 }

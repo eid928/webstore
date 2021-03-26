@@ -11,4 +11,5 @@ public interface GoodsService {
 	public SearchMsg<Goods> searchByGoodsSeller(String sellerKeyword, String order, boolean asc, int page);
 	public void postGoods(Goods goods);
 	public void updateGoods(Goods goods);
+	public void deleteGoods(int id);
 }

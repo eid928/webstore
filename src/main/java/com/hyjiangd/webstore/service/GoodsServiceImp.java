@@ -60,4 +60,12 @@ public class GoodsServiceImp implements GoodsService{
 		String usernameOfLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		goodsDao.update(usernameOfLogin, goods);
 	}
+
+	@Override
+	@Transactional
+	public void deleteGoods(int id) {
+		
+		String usernameOfLogin = SecurityContextHolder.getContext().getAuthentication().getName();
+		goodsDao.delete(usernameOfLogin, id);
+	}
 }

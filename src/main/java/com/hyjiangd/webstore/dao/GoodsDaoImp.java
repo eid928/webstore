@@ -122,7 +122,7 @@ public class GoodsDaoImp implements GoodsDao{
 		String usernameOfDbGoods = dbGoods.getUser().getUsername();
 		
 		if (!usernameOfLogin.equals(usernameOfDbGoods)) {
-			throw new NotFoundException("沒有在您的上架清單中找到此商品");
+			throw new NotFoundException("此商品不屬於您的上架商品");
 		}
 		// ensure that the user can only update their own goods
 		
@@ -138,5 +138,21 @@ public class GoodsDaoImp implements GoodsDao{
 		System.out.println(dbGoods.getLastUpdateTime());
 		
 		session.save(dbGoods);
+	}
+
+	@Override
+	public void delete(String usernameOfLogin, int id) {
+		
+		Session session = entityManager.unwrap(Session.class);
+		Goods dbGoods = session.get(Goods.class, id);
+		
+		String usernameOfDbGoods = dbGoods.getUser().getUsername();
+		
+		if (!usernameOfLogin.equals(usernameOfDbGoods)) {
+			throw new NotFoundException("此商品不屬於您的上架商品");
+		}
+		// ensure that the user can only update their own goods
+		
+		session.delete(dbGoods);
 	}
 }
