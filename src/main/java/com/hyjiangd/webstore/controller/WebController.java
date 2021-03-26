@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hyjiangd.webstore.entity.Goods;
 import com.hyjiangd.webstore.service.GoodsService;
@@ -216,6 +217,29 @@ public class WebController {
 		model.addAttribute("newFileName", newFileName);
 		
 		return "postgoods";
+	}
+	
+	@GetMapping("/updategoods")
+	public String showGoodsUpdateForm(Model model) {
+		
+		String loginUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		model.addAttribute("loginUsername", loginUsername);
+		
+		return "updategoods";
+	}
+	
+	@PostMapping("/fileUpdate")
+	public String updateImage(@RequestParam("fileName") MultipartFile file, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		
+		
+		String newFileName = FileUtils.upload(file, path, file.getOriginalFilename());
+		
+		String id = request.getParameter("id");
+		
+		redirectAttributes.addAttribute("id", id);
+		redirectAttributes.addFlashAttribute("newFileName", newFileName);
+		
+		return "redirect:/updategoods";
 	}
 	
 	@GetMapping("/login")

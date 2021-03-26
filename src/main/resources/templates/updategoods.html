@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin 2 - Dashboard</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    
+    <style type="text/css">
+	    .frame {  
+	    height: 450px; /*can be anything*/
+	    width: 450px; /*can be anything*/
+	    position: relative;
+	    border-style: solid;
+	    border-width: 1px;
+		}
+		.goodsimg {  
+		    max-height: 100%;  
+		    max-width: 100%; 
+		    width: auto;
+		    height: auto;
+		    position: absolute;  
+		    top: 0;  
+		    bottom: 0;  
+		    left: 0;  
+		    right: 0;  
+		    margin: auto;
+		    
+		}
+    </style>
+    
+    <script type="text/javascript">
+	    let urlParams = new URLSearchParams(window.location.search);
+		var id = urlParams.get('id');
+    
+    	function showOriginGoods() {
+    		
+    		
+    		var uri = 'http://localhost:8080/findgoods/' + id;
+    		
+    		$.ajax({
+    			type: "GET", 
+    			url: uri, 
+    			dataType: "json",
+    			contentType : 'application/json; charset=utf-8',
+    			success: function(result) {
+    				document.getElementById('goodsId').value = id;
+    				document.getElementById('name').value = result.name;
+    				document.getElementById('description').value = result.description;
+    				document.getElementById('price').value = result.price;
+    				document.getElementById('inventories').value = result.inventories;
+    				document.getElementById('image').innerHTML = result.image;
+    				document.getElementById('imageFile').src = 'dynamic/images/' + result.image;
+    			}, 
+    			error: function(result) {
+    				alert("fail");
+    			}
+    		});
+    	}
+    	
+    	function checkImageUpload() {
+    		
+    		if (document.getElementById('image') == null) {
+    			document.getElementById('imageValidationMsg').style = 'color : red'
+    				document.getElementById('imageValidationMsg').innerHTML = '*尚未上傳商品圖片';
+    			return false;
+    		}
+    		return true;
+    	}
+		
+		
+    	function updateGoods() {
+    		
+    		var uri = 'http://localhost:8080/goods';
+    		var goods = {
+    				"id": id,
+    			    "name": document.getElementById('name').value,
+    			    "price": document.getElementById('price').value,
+    			    "description": document.getElementById('description').value,
+    			    "inventories": document.getElementById('inventories').value,
+    			    "image": document.getElementById('image') == null? document.getElementById('newImage').innerHTML : document.getElementById('image').innerHTML
+    			};
+    		
+    		for (var i = 0; i < document.getElementsByClassName('validationMsg').length; i++) {
+    			document.getElementsByClassName('validationMsg')[i].innerHTML = '';
+    		}
+    		
+    		console.log('uri = ' + uri);
+    		console.log(goods);
+    		$.ajax({
+    			type: "PUT", 
+    			url: uri, 
+    			dataType: "json",
+    			contentType : 'application/json; charset=utf-8',
+    			data: JSON.stringify(goods),
+    			success: function(result) {
+    				alert(result.message);
+    				document.location = '/sellgoods';
+    			}, 
+    			error: function(result) {
+    				console.log(result);
+    				alert("fail");
+    				
+    				for (var i = 0; i < result.responseJSON.errors.length; i ++) {
+    					console.log(result.responseJSON.errors[i].field + "ValidationMsg");
+    					document.getElementById(result.responseJSON.errors[i].field + "ValidationMsg").innerHTML = '*' + result.responseJSON.errors[i].defaultMessage;
+    				}
+    			}
+    		});
+    	}
+    </script>
+
+</head>
+
+<body id="page-top" onload="showOriginGoods()">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">Welcome</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Login/Logout button -->
+            <li class="nav-item" th:if="${loginUsername == 'anonymousUser'}">
+            	<span class="nav-link">歡迎光臨!  訪客</span>
+            	<hr class="sidebar-divider">
+	            <div class="sidebar-heading">
+	                會員
+	            </div>
+                <a class="nav-link" href="/login">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>登入</span></a>
+                <a class="nav-link" href="/register">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>註冊</span></a>
+            </li>
+            <li class="nav-item" th:if="${loginUsername != 'anonymousUser'}">
+            	<span class="nav-link" th:text="'歡迎光臨!  ' + ${loginUsername}"></span>
+            	<hr class="sidebar-divider my-0">
+	            <div class="sidebar-heading">
+	                會員
+	            </div>
+                <a class="nav-link" href="/userarea">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>會員專區</span></a>
+                <a class="nav-link" href="/logout">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>登出</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                買東西
+            </div>
+
+            <!-- Nav Item - cart -->
+            <li class="nav-item">
+                <a class="nav-link" href="/showcart">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>查看購物車</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - order as buyer -->
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>查看訂單</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                賣東西
+            </div>
+
+            <!-- Nav Item - cart -->
+            <li class="nav-item">
+                <a class="nav-link" href="/sellgoods">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>管理賣場</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - order as buyer -->
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>查看訂單</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+            <!-- Sidebar Message -->
+            <div class="sidebar-card">
+                <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="">
+                <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
+                <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Search -->
+                    <form
+                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" action="/search" method="get">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light small" placeholder="Search for..."
+                                aria-label="Search" aria-describedby="basic-addon2" id="searchKeyword" name="searchKeyword">
+                            <div class="input-group-append">
+                                <select class="form-control bg-light small" id="searchBy" name="searchBy">
+                            		<option value="goods">商品標題</option>
+                            		<option value="seller">商品賣家</option>
+                            	</select>
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                        <!-- Nav Item - Alerts -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-bell fa-fw"></i>
+                                <!-- Counter - Alerts -->
+                                <span class="badge badge-danger badge-counter">3+</span>
+                            </a>
+                            <!-- Dropdown - Alerts -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="alertsDropdown">
+                                <h6 class="dropdown-header">
+                                    Alerts Center
+                                </h6>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-primary">
+                                            <i class="fas fa-file-alt text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="small text-gray-500">December 12, 2019</div>
+                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                                    </div>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-success">
+                                            <i class="fas fa-donate text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="small text-gray-500">December 7, 2019</div>
+                                        $290.29 has been deposited into your account!
+                                    </div>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-warning">
+                                            <i class="fas fa-exclamation-triangle text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="small text-gray-500">December 2, 2019</div>
+                                        Spending Alert: We've noticed unusually high spending for your account.
+                                    </div>
+                                </a>
+                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                            </div>
+                        </li>
+
+                        <!-- Nav Item - Messages -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-envelope fa-fw"></i>
+                                <!-- Counter - Messages -->
+                                <span class="badge badge-danger badge-counter">7</span>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="messagesDropdown">
+                                <h6 class="dropdown-header">
+                                    Message Center
+                                </h6>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="dropdown-list-image mr-3">
+                                        <img class="rounded-circle" src="img/undraw_profile_1.svg"
+                                            alt="">
+                                        <div class="status-indicator bg-success"></div>
+                                    </div>
+                                    <div class="font-weight-bold">
+                                        <div class="text-truncate">Hi there! I am wondering if you can help me with a
+                                            problem I've been having.</div>
+                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
+                                    </div>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="dropdown-list-image mr-3">
+                                        <img class="rounded-circle" src="img/undraw_profile_2.svg"
+                                            alt="">
+                                        <div class="status-indicator"></div>
+                                    </div>
+                                    <div>
+                                        <div class="text-truncate">I have the photos that you ordered last month, how
+                                            would you like them sent to you?</div>
+                                        <div class="small text-gray-500">Jae Chun · 1d</div>
+                                    </div>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="dropdown-list-image mr-3">
+                                        <img class="rounded-circle" src="img/undraw_profile_3.svg"
+                                            alt="">
+                                        <div class="status-indicator bg-warning"></div>
+                                    </div>
+                                    <div>
+                                        <div class="text-truncate">Last month's report looks great, I am very happy with
+                                            the progress so far, keep up the good work!</div>
+                                        <div class="small text-gray-500">Morgan Alvarez · 2d</div>
+                                    </div>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="dropdown-list-image mr-3">
+                                        <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
+                                            alt="">
+                                        <div class="status-indicator bg-success"></div>
+                                    </div>
+                                    <div>
+                                        <div class="text-truncate">Am I a good boy? The reason I ask is because someone
+                                            told me that people say this to all dogs, even if they aren't good...</div>
+                                        <div class="small text-gray-500">Chicken the Dog · 2w</div>
+                                    </div>
+                                </a>
+                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+                            </div>
+                        </li>
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="loginUsername" class="mr-2 d-none d-lg-inline text-gray-600 small" th:text="${loginUsername}"></span>
+                                <img class="img-profile rounded-circle"
+                                    src="img/undraw_profile.svg">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Settings
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Activity Log
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                
+                <!-- /.container-fluid -->
+
+	                <div id="goodsDetail">
+
+	                	<div class="col">
+		                	<div class="card mb-4 border-bottom-primary">
+		                		<div class="card-header py-3">
+	                				<span class="m-0 font-weight-bold text-primary h4">商品表單</span>
+	                				<a type="button" class="btn btn-success btn-icon-split" style="float: right; top: 50px;" onclick="updateGoods()">
+								                	<span class="icon text-white-50">
+								                    	<i class="fas fa-check"></i>
+								                    </span>
+								                    <span class="text">更新商品</span>
+	                				</a>
+	                			</div>
+			                	<div class="card-body row">
+			                		<div class="col">
+			                			<div class="row">
+			                				<form action="fileUpdate" method="post" enctype="multipart/form-data" class="col">
+			                					圖片：<input type="file" name="fileName" class="form-control">
+			                					<input type="hidden" name="id" id="goodsId">
+			                					<input type="submit" value="上傳檔案">
+			                					<br>
+			                					預覽：
+			                					<span th:if="${newFileName == null}" id="image"></span>
+			                					<span th:if="${newFileName != null}" th:text="${newFileName}" id="newImage"></span>
+			                					<div class="frame form-control">
+			                						<img th:if="${newFileName == null}" class="goodsimg" id="imageFile">
+			                						<img th:if="${newFileName != null}" th:src="'dynamic/images/' + ${newFileName}" class="goodsimg">
+			                					</div>
+			                				</form>
+			                				<div class="col">
+				                				名稱：<span class="validationMsg" id="nameValidationMsg" style="color: red;"></span>
+				                				<input type="text" class="form-control" id="name">
+				                				單價：<span class="validationMsg" id="priceValidationMsg" style="color: red;"></span>
+				                				<input type="number" class="form-control" id="price">
+				                				庫存：<span class="validationMsg" id="inventoriesValidationMsg" style="color: red;"></span>
+			                				<input type="number" class="form-control" id="inventories">
+			                				</div>
+			                				<div class="col">
+			                					詳細說明：<span class="validationMsg" id="descriptionValidationMsg" style="color: red;"></span>
+			                					<textarea rows="22" cols="20" class="form-control" id="description"></textarea>
+			                				</div>
+			                			</div>
+                            		</div>
+			                	</div>
+		                	</div>
+	                	</div>
+                    </div>
+                </div>
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Your Website 2020</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
+
+</body>
+
+</html>
