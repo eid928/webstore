@@ -427,19 +427,18 @@
                     	<h1 class="h3 mb-0 text-gray-800">您的購物車: 
                         <input type="hidden" id="cartLength" th:value="${#lists.size(cart)}">
                         </h1>
+                        <h6>*對於不同賣家的商品，系統將會自動幫您分為不同訂單</h6>
                     </div>
                     <div class="row">
                     	
 						<div class="col-lg-4" th:each="item, itemStat : ${cart}">
 							<div class="card mb-4 border-bottom-primary">
 								<div class="card-header py-3">
-	                				
-	                				<span class="m-0 font-weight-bold text-primary h4" id="name" th:text="${item.goods.name}"></span>
-	                				
-	                				<span style="float: right;">
-		                				<a th:href="'remove?id=' + ${item.goods.id}" class="btn btn-danger btn-circle btn-sm" style="font-weight: bolder;">
-			                				X
-		                				</a>
+	                				<h5 class="m-0 font-weight-bold text-primary"  style="white-space: nowrap; text-overflow:ellipsis; word-break:break-ll; overflow:hidden;">
+	                				<span id="name" th:text="${item.goods.name}">
+	                				</span>
+	                				</h5>
+	                				<span th:text="'賣家: ' + ${item.goods.user.username}">
 	                				</span>
 	                			</div>
 								<div class="card-body row">
@@ -450,19 +449,27 @@
 										</a>
 									</div>
 									
-									<div class="col" th:id="${itemStat.index}" style="left: 10px;">
+									<div class="col" th:id="${itemStat.index}" style="left: 10px; width: 50px;">
 										<input type="hidden" name="goodsid" th:value="${item.goods.id}">
-										<h5 th:text="'單價: ' + ${item.goods.price}"></h5>
+										<h5 style="white-space: nowrap; text-overflow:ellipsis; word-break:break-ll; overflow:hidden;" th:text="'單價: ' + ${item.goods.price}"></h5>
 										<h5>數量: 
 										<input type="number" style="width: 50px;" name="quantity" th:value="${item.quantity}" th:onblur="'caculate(' + ${item.goods.id} + ', ' + ${item.goods.price} + ', this.value)'">
 										</h5>
+										<a th:href="'remove?id=' + ${item.goods.id}" class="btn btn-danger btn-sm">
+		                					<span class="icon text-white-50">
+                                            	<i class="fas fa-trash"></i>
+                                        	</span>
+		                				</a>
 									</div>
 								</div>
 								<hr>
-								<div style="text-align: right; padding-right: 10px;">
+
+								
+								<div style="text-align:right; padding-right: 10px; padding-left: 10px;">
 									<span class="h5">小計: </span>
 									<span class="h5" style="color: red;" th:id="'subtotal_' + ${item.goods.id}" th:text="${item.goods.price} * ${item.quantity}">
 									</span>
+									
 								</div>
 							</div>
 						</div>

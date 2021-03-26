@@ -101,7 +101,8 @@
 		                		'<div class="col-lg-4">' +
 			                		'<div class="card mb-4 border-bottom-primary">' +
 			                			'<div class="card-header py-3">' +
-	                						'<h5 class="m-0 font-weight-bold text-primary" id="name">' + result.searchResult[i].name + '</h5>' +
+	                						'<h6 class="m-0 font-weight-bold text-primary" id="name" style="white-space: nowrap; text-overflow:ellipsis; word-break:break-ll; overflow:hidden;">' + result.searchResult[i].name + '</h5>' +
+	                						'<span>賣家: ' + result.searchResult[i].user.username + '</span>' +
 	                					'</div>' +
 			                			'<div class="card-body row">' +
 			                				'<a href="/goodsdetail?id=' + result.searchResult[i].id + '">' +
@@ -111,7 +112,7 @@
 			                				'</a>' +
 			                				'<div class="col" style="left: 10px">' +
 			                				'<h6>' +
-			                				'上次更新時間: ' + '<br>' + result.searchResult[i].lastUpdateTime +
+			                				'最後更新時間: ' + '<br>' + result.searchResult[i].lastUpdateTime +
 			                				'</h6>' + '<br>' + '<br>' + '<br>' +
 			                				'<h5 style="color: red">' +
 			                				'$' + result.searchResult[i].price +

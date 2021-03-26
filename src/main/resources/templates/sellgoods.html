@@ -26,13 +26,11 @@
 		var order = urlParams.get('order') == null? 'lastUpdateTime':urlParams.get('order');
 		var page = urlParams.get('page') == null? '1': urlParams.get('page');
 		
-		
-		
 		function orderBy(newOrder) {
 			
-			var href = window.location.href;
-			var originOrderParam = '?order=' + order;
-			var newOrderParam = '?order=' + newOrder;
+			var href = window.location.href + (window.location.search == ''? '?':''); // 因為一進sellgoods頁面並不帶任何url參數，若沒有則+一個?，以免跟pagination衝突
+			var originOrderParam = '&order=' + order;
+			var newOrderParam = '&order=' + newOrder;
 			var originAscParam = '&asc=' + asc;
 			if(order === newOrder) { // order不變，做升降序切換。
 				var newAscParam = '&asc=' + (asc === 'false'? 'true':'false');
@@ -42,6 +40,7 @@
 			
 			href = urlParams.get('order') == null? href + newOrderParam : href.replace(originOrderParam, newOrderParam);
 			href = urlParams.get('asc') == null? href + newAscParam : href.replace(originAscParam, newAscParam);
+			console.log(href);
 			window.location = href;
 		}
 		
@@ -62,22 +61,21 @@
     				document.getElementById("summaryOfSearch").innerHTML = '您的商品共有' + result.totalSearchResult + '筆';
     				for(var i = 0; i < result.searchResult.length; i++) {
     					
-    					var date = new Date(result.searchResult[i].lastUpdateTime);
     					document.getElementById('goodsList').innerHTML += 
     						'<tr>' +
                             	'<td>' + result.searchResult[i].name + '</td>' +
                                 '<td>' + result.searchResult[i].price + '</td>' +
                                 '<td>' + result.searchResult[i].inventories + '</td>' +
                                 '<td><a href="goodsdetail?id=' + result.searchResult[i].id + '">詳細頁面</a></td>' +
-                                '<td>' + date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay() + '  ' + date.getHours() + ':' + date.getMinutes() + '</td>' +
+                                '<td>' + result.searchResult[i].lastUpdateTime + '</td>' +
                                 '<td>' +
-	                            	'<button>更新</button>' +
-	                            	'<button>下架</button>' +
+	                            	'<button><a href="/updategoods?id=' + result.searchResult[i].id + '">更新</a></button>' +
+	                            	'<button style="color: red" onclick="deleteGoods(' + result.searchResult[i].id + ')">下架</button>' +
                             	'</td>' +
                             '</tr>';
     				}
     				for(var i = 0; i < (result.totalSearchResult / 6); i ++) { // to produce the pagination item according to the totalSearchResult
-    					var href = window.location.href;
+    					var href = window.location.href + (window.location.search == ''? '?':''); // // 因為一進sellgoods頁面並不帶任何url參數，若沒有則+一個?，以免跟order衝突
     					var originPageParam = '&page=' + page;
     					var newPageParam = '&page=' + (i+1);
     					var wetherActive = page == (i+1)? "active":""
@@ -88,6 +86,25 @@
     					document.getElementById('pagination').innerHTML +=
     							'<li class="page-item ' + wetherActive + '"><a class="page-link" href=' + href + '>' + (i+1) + '</a></li>';
     				}
+    			}, 
+    			error: function() {
+    				alert("fail");
+    			}
+    		});
+    	}
+    	
+    	function deleteGoods(id) {
+    		
+    		var uri = 'http://localhost:8080/goods/' + id;
+    		
+    		$.ajax({
+    			type: "DELETE", 
+    			url: uri, 
+    			dataType: "json",
+    			contentType : 'application/json; charset=utf-8',
+    			success: function(result) {
+    				alert(result.message);
+    				window.location = 'sellgoods';
     			}, 
     			error: function() {
     				alert("fail");

@@ -60,8 +60,6 @@
     			dataType: "json",
     			success: function(result) {
     				
-    				var date = new Date(result.lastUpdateTime);
-    				
     				console.log(result.lastUpdateTime);
     				document.getElementById("name").innerHTML = result.name;
     				document.getElementById("inventories").innerHTML = result.inventories;
@@ -69,7 +67,7 @@
     				document.getElementById("username").innerHTML = result.user.username;
     				document.getElementById("username").href = '/search?searchBy=seller&searchKeyword=' + result.user.username;
     				document.getElementById("cart").href = '/cart?id=' + result.id;
-    				document.getElementById("lastUpdateTime").innerHTML = '上次更新時間: ' + date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay() + ' ' + date.getHours() + ':' + date.getMinutes();
+    				document.getElementById("lastUpdateTime").innerHTML = '最後更新時間: ' + result.lastUpdateTime;
     				document.getElementById("description").innerHTML = result.description;
     				document.getElementById("image").src = 'dynamic/images/' + result.image;
     			}, 

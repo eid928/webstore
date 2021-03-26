@@ -44,9 +44,22 @@
     </style>
     
     <script type="text/javascript">
+    	function checkImageUpload() {
+    		
+    		if (document.getElementById('image') == null) {
+    			document.getElementById('imageValidationMsg').style = 'color : red'
+    				document.getElementById('imageValidationMsg').innerHTML = '*尚未上傳商品圖片';
+    			return false;
+    		}
+    		return true;
+    	}
 		
 		
     	function postGoods() {
+    		
+    		if (!checkImageUpload()) {
+    			return;
+    		}
     		
     		var uri = 'http://localhost:8080/goods';
     		var goods = {
@@ -60,6 +73,10 @@
     			    "image": document.getElementById('image').innerHTML
     			};
     		
+    		for (var i = 0; i < document.getElementsByClassName('validationMsg').length; i++) {
+    			document.getElementsByClassName('validationMsg')[i].innerHTML = '';
+    		}
+    		
     		console.log('uri = ' + uri);
     		console.log(goods);
     		$.ajax({
@@ -70,9 +87,16 @@
     			data: JSON.stringify(goods),
     			success: function(result) {
     				alert(result.message);
+    				document.location = '/sellgoods';
     			}, 
-    			error: function() {
+    			error: function(result) {
+    				console.log(result);
     				alert("fail");
+    				
+    				for (var i = 0; i < result.responseJSON.errors.length; i ++) {
+    					console.log(result.responseJSON.errors[i].field + "ValidationMsg");
+    					document.getElementById(result.responseJSON.errors[i].field + "ValidationMsg").innerHTML = '*' + result.responseJSON.errors[i].defaultMessage;
+    				}
     			}
     		});
     	}
@@ -417,7 +441,13 @@
 	                	<div class="col">
 		                	<div class="card mb-4 border-bottom-primary">
 		                		<div class="card-header py-3">
-	                				<h4 class="m-0 font-weight-bold text-primary">商品表單</h4>
+	                				<span class="m-0 font-weight-bold text-primary h4">商品表單</span>
+	                				<a type="button" class="btn btn-success btn-icon-split" style="float: right; top: 50px;" onclick="postGoods()">
+								                	<span class="icon text-white-50">
+								                    	<i class="fas fa-check"></i>
+								                    </span>
+								                    <span class="text">上架商品</span>
+	                				</a>
 	                			</div>
 			                	<div class="card-body row">
 			                		<div class="col">
@@ -427,25 +457,23 @@
 			                					<input type="submit" value="上傳檔案">
 			                					<br>
 			                					預覽：
-			                					<span th:if="${newFileName == null}">尚未上傳商品圖片</span>
+			                					<span class="validationMsg" th:if="${newFileName == null}" id="imageValidationMsg">尚未上傳商品圖片</span>
 			                					<span th:if="${newFileName != null}" th:text="${newFileName}" id="image"></span>
 			                					<div class="frame form-control">
 			                						<img th:if="${newFileName != null}" th:src="'dynamic/images/' + ${newFileName}" class="goodsimg">
 			                					</div>
 			                				</form>
 			                				<div class="col">
-			                				名稱：<input type="text" class="form-control" id="name">
-			                				單價：<input type="number" class="form-control" id="price">
-			                				庫存：<input type="number" class="form-control" id="inventories">
+				                				名稱：<span class="validationMsg" id="nameValidationMsg" style="color: red;"></span>
+				                				<input type="text" class="form-control" id="name">
+				                				單價：<span class="validationMsg" id="priceValidationMsg" style="color: red;"></span>
+				                				<input type="number" class="form-control" id="price">
+				                				庫存：<span class="validationMsg" id="inventoriesValidationMsg" style="color: red;"></span>
+			                				<input type="number" class="form-control" id="inventories">
 			                				</div>
 			                				<div class="col">
-			                				詳細說明：<textarea rows="10" cols="20" class="form-control" id="description"></textarea>
-			                					<a type="button" class="btn btn-success btn-icon-split" style="float: right;" onclick="postGoods()">
-								                	<span class="icon text-white-50">
-								                    	<i class="fas fa-check"></i>
-								                    </span>
-								                    <span class="text">提交訂單</span>
-	                							</a>
+			                					詳細說明：<span class="validationMsg" id="descriptionValidationMsg" style="color: red;"></span>
+			                					<textarea rows="22" cols="20" class="form-control" id="description"></textarea>
 			                				</div>
 			                			</div>
                             		</div>
