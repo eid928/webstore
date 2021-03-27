@@ -48,7 +48,7 @@ public class Goods {
 	
 	@Column(name = "inventories")
 	@NotNull
-	@Min(value = 1, message = "庫存不得小於1")
+	@Min(value = 0, message = "庫存不得小於0")
 	@Max(value = 999999, message = "庫存不得大於999999")
 	private int inventories;
 	

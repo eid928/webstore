@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hyjiangd.webstore.entity.Order;
 import com.hyjiangd.webstore.entity.OrderDetail;
+import com.hyjiangd.webstore.message.CrudMsg;
 import com.hyjiangd.webstore.service.OrderService;
 
 @RestController
@@ -45,7 +46,7 @@ public class OrderRestController {
 	}
 	
 	@PostMapping("orders")
-	public String summitOrder(@RequestBody List<Map<String, Integer>> cart) {
+	public CrudMsg summitOrder(@RequestBody List<Map<String, Integer>> cart) {
 		
 		return orderService.summitOrder(cart);
 	}

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.hyjiangd.webstore.entity.Order;
 import com.hyjiangd.webstore.entity.OrderDetail;
+import com.hyjiangd.webstore.message.CrudMsg;
 
 public interface OrderService {
 	
@@ -12,5 +13,5 @@ public interface OrderService {
 	public List<Order> findByLoginUserAsSeller();
 	public Order findByOrderId(int orderId);
 	public List<OrderDetail> findOrderDetailsByOrderId(int orderId);
-	public String summitOrder(List<Map<String, Integer>> cart);
+	public CrudMsg summitOrder(List<Map<String, Integer>> cart);
 }
