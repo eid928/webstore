@@ -46,17 +46,28 @@
     </style>
     
     <script type="text/javascript">
-    	function caculate(id, price, quantity) {
+    	function caculate(id, price, input) {
+    		
+    		var quantity = input.value;
+    		
     		console.log("subtotal_" + id);
     		console.log(price * quantity);
     		console.log(Number.isInteger(quantity));
     		
     		var r = /^[0-9]*[1-9][0-9]*$/;
+    		var inventories = document.getElementById('inventories_' + id).innerHTML.split(': ')[1];
     		
     		if (!r.test(quantity)) {
     			alert("商品數量異常");
     			return;
+    		} else if (quantity > inventories) {
+    			alert("不可超過庫存");
+    			input.value = inventories;
+    			input.focus();
+    			return;
     		}
+    		
+    		
     		var originSubtotal = document.getElementById("subtotal_" + id).innerHTML;
     		var newSubtotal = price * quantity;
     		var total = document.getElementById('total').innerHTML;
@@ -65,28 +76,6 @@
     		
     		document.getElementById("subtotal_" + id).innerHTML = newSubtotal;
     		document.getElementById("total").innerHTML = total;
-    	}
-    	
-    	function savecart() {
-    		
-    		var uri = 'http://localhost:8080/savecart';
-    		var data = {
-    				"goodsId": 100,
-    				"quantity": 100
-    		};
-    		console.log('uri = ' + uri);
-    		$.ajax({
-    			type: "POST", 
-    			url: uri, 
-    			contentType : 'application/json; charset=utf-8',
-    			data: JSON.stringify(data),
-    			success: function(result) {
-
-    			}, 
-    			error: function() {
-    				alert("fail");
-    			}
-    		});
     	}
     </script>
 
@@ -452,8 +441,9 @@
 									<div class="col" th:id="${itemStat.index}" style="left: 10px; width: 50px;">
 										<input type="hidden" name="goodsid" th:value="${item.goods.id}">
 										<h5 style="white-space: nowrap; text-overflow:ellipsis; word-break:break-ll; overflow:hidden;" th:text="'單價: ' + ${item.goods.price}"></h5>
+										<h5 style="white-space: nowrap; text-overflow:ellipsis; word-break:break-ll; overflow:hidden;" th:text="'庫存: ' + ${item.goods.inventories}" th:id="'inventories_' + ${item.goods.id}"></h5>
 										<h5>數量: 
-										<input type="number" style="width: 50px;" name="quantity" th:value="${item.quantity}" th:onblur="'caculate(' + ${item.goods.id} + ', ' + ${item.goods.price} + ', this.value)'">
+										<input type="number" style="width: 50px;" min="1" th:max="${item.goods.inventories}" name="quantity" th:value="${item.quantity}" th:onblur="'caculate(' + ${item.goods.id} + ', ' + ${item.goods.price} + ', this)'">
 										</h5>
 										<a th:href="'remove?id=' + ${item.goods.id}" class="btn btn-danger btn-sm">
 		                					<span class="icon text-white-50">
