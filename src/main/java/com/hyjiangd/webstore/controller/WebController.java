@@ -189,6 +189,17 @@ public class WebController {
 		return "redirect:/showcart";
 	}
 	
+	@GetMapping("/ordersub")
+	public String showOrderSubmissionResult(HttpServletRequest request) {
+		
+		String loginUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		request.setAttribute("loginUsername", loginUsername);
+		
+		request.getSession().removeAttribute("cart");
+		
+		return "ordersub";
+	}
+	
 	@GetMapping("/sellgoods")
 	public String showGoodsOfSeller(Model model) {
 		
