@@ -27,7 +27,7 @@ public class Order {
 	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, 
 			  fetch = FetchType.EAGER)
 	@JoinColumn(name = "seller_username")
-	@JsonIgnoreProperties({"password", "enabled", "authority", "userDetail"})
+	@JsonIgnoreProperties({"password", "enabled", "authority"})
 	private User sellerUser;
 	
 	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, 

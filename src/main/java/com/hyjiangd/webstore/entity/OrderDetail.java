@@ -30,6 +30,7 @@ public class OrderDetail {
 	
 	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "goodsid")
+	@JsonIgnoreProperties({"description", "image", "inventories", "lastUpdateTime"})
 	private Goods goods;
 	
 	@Column(name = "quantity")
