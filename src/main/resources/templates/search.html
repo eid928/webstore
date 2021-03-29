@@ -117,7 +117,7 @@
 			                				'<h5 style="color: red">' +
 			                				'$' + result.searchResult[i].price +
 			                				'</h5>' +
-			                				'<a style="float: bottom;" href="/cart?id=' + result.searchResult[i].id + '">加進購物車</a>'+
+			                				(result.searchResult[i].inventories > 0? ('<a style="float: bottom;" href="/cart?id=' + result.searchResult[i].id + '">加進購物車</a>') : ('<a style="float: bottom; color: gray;" href="#">目前尚無庫存</a>')) +
 			                				'</div>' +
 			                			'</div>' +
 			                		'</div>' +                		                		                			                
@@ -219,7 +219,7 @@
 
             <!-- Nav Item - order as buyer -->
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="/showorderofbuyer">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>查看訂單</span>
                 </a>

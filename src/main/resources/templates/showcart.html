@@ -77,6 +77,35 @@
     		document.getElementById("subtotal_" + id).innerHTML = newSubtotal;
     		document.getElementById("total").innerHTML = total;
     	}
+    	
+    	function submitOrder() {
+    		
+    		var cart = [];
+    		
+    		for (var i = 0; i < document.getElementsByClassName('col').length; i++) {
+    			var item = {
+    					"goodsId": document.getElementsByClassName('col')[i].getElementsByTagName("input")[0].value, 
+    					"quantity": document.getElementsByClassName('col')[i].getElementsByTagName("input")[1].value
+    			};
+    			cart.push(item);
+    		}
+    		
+    		$.ajax({
+    			type: "POST", 
+    			url: "http://localhost:8080/orders/", 
+    			dataType: "json",
+    			contentType : 'application/json; charset=utf-8',
+    			data: JSON.stringify(cart),
+    			success: function(result) {
+    				alert(result.message);
+    				document.location = '/ordersubmit';
+    			}, 
+    			error: function(result) {
+    				console.log(result);
+    				alert("fail");
+    			}
+    		});
+    	}
     </script>
 
 </head>
@@ -146,7 +175,7 @@
 
             <!-- Nav Item - order as buyer -->
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="/showorderofbuyer">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>查看訂單</span>
                 </a>
@@ -439,7 +468,7 @@
 									</div>
 									
 									<div class="col" th:id="${itemStat.index}" style="left: 10px; width: 50px;">
-										<input type="hidden" name="goodsid" th:value="${item.goods.id}">
+										<input type="hidden" name="goodsId" th:value="${item.goods.id}">
 										<h5 style="white-space: nowrap; text-overflow:ellipsis; word-break:break-ll; overflow:hidden;" th:text="'單價: ' + ${item.goods.price}"></h5>
 										<h5 style="white-space: nowrap; text-overflow:ellipsis; word-break:break-ll; overflow:hidden;" th:text="'庫存: ' + ${item.goods.inventories}" th:id="'inventories_' + ${item.goods.id}"></h5>
 										<h5>數量: 
@@ -470,7 +499,7 @@
 						<span class="h4">總計: </span>
 						<span class="h4" style="color: red;" th:text="${total}" id="total"></span>
 						<hr>
-						<a type="button" class="btn btn-success btn-icon-split" style="float: right;" onclick="">
+						<a type="button" class="btn btn-success btn-icon-split" style="float: right;" onclick="submitOrder()">
 		                	<span class="icon text-white-50">
 		                    	<i class="fas fa-check"></i>
 		                    </span>
