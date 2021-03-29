@@ -43,6 +43,17 @@
 		    right: 0;  
 		    margin: auto;
 		}
+		
+		#popup {
+			display: none;  
+	        border:10px solid #ddd;  
+	        position: fixed;
+			top: 20%;
+	        height:60%;  
+	        width:60%;  
+	        background: white;  
+	        margin: 0 auto;
+		}
     </style>
     
     <script type="text/javascript">
@@ -105,6 +116,18 @@
     				alert("fail");
     			}
     		});
+    	}
+    	
+    	function popup() {
+    		
+    		document.getElementById("popup").innerHTML += '';
+    		document.getElementById("popup").style.display = "block";  
+			document.getElementById("popup").style.left=(document.body.scrollWidth-document.getElementById("popup").scrollWidth)/2+"px";
+    	}
+    	
+		function hide() {
+    		
+    		document.getElementById("popup").style.display = "none";
     	}
     </script>
 
@@ -505,6 +528,13 @@
 		                    </span>
 		                    <span class="text">提交訂單</span>
 	                	</a>
+	                	<a href="#myPopup" class="btn btn-success btn-icon-split" style="float: right;" onclick="popup()">
+		                	<span class="icon text-white-50">
+		                    	<i class="fas fa-check"></i>
+		                    </span>
+		                    <span class="text">彈出視窗test</span>
+	                	</a>
+
 					</div>
 					
                 </div>
@@ -554,6 +584,18 @@
             </div>
         </div>
     </div>
+    
+    <div id="popup">
+    	<div>test</div>
+    	<div style="text-align: center; margin-top: 400px;">
+		<a class="btn btn-success btn-icon-split"  onclick="hide()">
+			<span class="icon text-white-50">
+			<i class="fas fa-check"></i>
+			</span>
+			<span class="text">確認</span>
+		</a>
+		</div>
+	</div>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
