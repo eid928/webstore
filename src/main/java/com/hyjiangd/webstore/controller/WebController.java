@@ -189,7 +189,7 @@ public class WebController {
 		return "redirect:/showcart";
 	}
 	
-	@GetMapping("/ordersub")
+	@GetMapping("/ordersubmit")
 	public String showOrderSubmissionResult(HttpServletRequest request) {
 		
 		String loginUsername = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -197,7 +197,7 @@ public class WebController {
 		
 		request.getSession().removeAttribute("cart");
 		
-		return "ordersub";
+		return "showorderofbuyer";
 	}
 	
 	@GetMapping("/sellgoods")
@@ -251,6 +251,15 @@ public class WebController {
 		redirectAttributes.addFlashAttribute("newFileName", newFileName);
 		
 		return "redirect:/updategoods";
+	}
+	
+	@GetMapping("/showorderofbuyer")
+	public String showOrderOfBuyer(Model model) {
+		
+		String loginUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		model.addAttribute("loginUsername", loginUsername);
+		
+		return "showorderofbuyer";
 	}
 	
 	@GetMapping("/login")
