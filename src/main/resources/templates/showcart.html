@@ -45,26 +45,32 @@
 		}
 		
 		#popup {
-			display: none;  
-	        border:10px solid #ddd;  
+			display: none;
 	        position: fixed;
 			top: 20%;
-	        height:60%;  
-	        width:60%;  
-	        background: white;  
+	        height:60%;
+	        width:35%;
+	        background: white;
 	        margin: 0 auto;
 		}
+		
+		#over {  
+	        width: 100%;  
+	        opacity:0.99;/*設定背景色透明度,1為完全不透明,IE需要使用filter:alpha(opacity=80);*/  
+	        filter:alpha(opacity=80);  
+	        display: none;  
+	        position:absolute;  
+	        top:0;  
+	        left:0;  
+	        z-index:2;  
+	        background: gray;  
+    	}
     </style>
     
     <script type="text/javascript">
     	function caculate(id, price, input) {
     		
-    		var quantity = input.value;
-    		
-    		console.log("subtotal_" + id);
-    		console.log(price * quantity);
-    		console.log(Number.isInteger(quantity));
-    		
+    		var quantity = parseInt(input.value,10);
     		var r = /^[0-9]*[1-9][0-9]*$/;
     		var inventories = document.getElementById('inventories_' + id).innerHTML.split(': ')[1];
     		
@@ -77,7 +83,6 @@
     			input.focus();
     			return;
     		}
-    		
     		
     		var originSubtotal = document.getElementById("subtotal_" + id).innerHTML;
     		var newSubtotal = price * quantity;
@@ -108,8 +113,8 @@
     			contentType : 'application/json; charset=utf-8',
     			data: JSON.stringify(cart),
     			success: function(result) {
-    				alert(result.message);
-    				document.location = '/ordersubmit';
+    				document.getElementById('sumbitMessage').innerHTML = result.message;
+    				popup();
     			}, 
     			error: function(result) {
     				console.log(result);
@@ -120,9 +125,10 @@
     	
     	function popup() {
     		
-    		document.getElementById("popup").innerHTML += '';
-    		document.getElementById("popup").style.display = "block";  
-			document.getElementById("popup").style.left=(document.body.scrollWidth-document.getElementById("popup").scrollWidth)/2+"px";
+    		document.getElementById("over").style.display = "block";
+    		document.getElementById("popup").style.display = "block";
+    		document.getElementById("over").style.height = document.body.scrollHeight + "px";
+			document.getElementById("popup").style.left = (document.body.scrollWidth-document.getElementById("popup").scrollWidth)/2+"px";
     	}
     	
 		function hide() {
@@ -222,7 +228,7 @@
 
             <!-- Nav Item - order as buyer -->
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="/showorderofseller">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>查看訂單</span>
                 </a>
@@ -584,17 +590,21 @@
             </div>
         </div>
     </div>
-    
-    <div id="popup">
-    	<div>test</div>
-    	<div style="text-align: center; margin-top: 400px;">
-		<a class="btn btn-success btn-icon-split"  onclick="hide()">
+    <div id="over">
+    <div id="popup" class="card mb-4 border-bottom-primary">
+    	<div class="card-header py-3 h5" style="text-align: center;">For Your Message</div>
+    	<div style="margin: auto; text-align: center;">
+    	<textarea rows="18" style="margin-top: 10px; resize: none; width: 100%; border: none;" readonly="readonly" id="sumbitMessage"></textarea>
+    	</div>
+    	<div style="text-align: center;">
+		<a class="btn btn-success btn-icon-split" href="/ordersubmit">
 			<span class="icon text-white-50">
 			<i class="fas fa-check"></i>
 			</span>
 			<span class="text">確認</span>
 		</a>
 		</div>
+	</div>
 	</div>
 
     <!-- Bootstrap core JavaScript-->
