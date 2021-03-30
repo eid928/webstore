@@ -22,7 +22,7 @@ public class OrderDaoImp implements OrderDao{
 	public List<Order> findByUserAsBuyer(String username) {
 		
 		Session session = entityManger.unwrap(Session.class);
-		Query<Order> query = session.createQuery("from Order where buyerUser.username = :username", Order.class);
+		Query<Order> query = session.createQuery("from Order where buyerUser.username = :username order by creationTime desc", Order.class);
 		query.setParameter("username", username);
 		List<Order> orders = query.getResultList();
 		
@@ -33,7 +33,7 @@ public class OrderDaoImp implements OrderDao{
 	public List<Order> findByUserAsSeller(String username) {
 		
 		Session session = entityManger.unwrap(Session.class);
-		Query<Order> query = session.createQuery("from Order where sellerUser.username = :username", Order.class);
+		Query<Order> query = session.createQuery("from Order where sellerUser.username = :username order by creationTime desc", Order.class);
 		query.setParameter("username", username);
 		List<Order> orders = query.getResultList();
 		
