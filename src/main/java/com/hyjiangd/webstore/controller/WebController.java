@@ -262,6 +262,15 @@ public class WebController {
 		return "showorderofbuyer";
 	}
 	
+	@GetMapping("/showorderofseller")
+	public String showOrderOfSeller(Model model) {
+		
+		String loginUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		model.addAttribute("loginUsername", loginUsername);
+		
+		return "showorderofseller";
+	}
+	
 	@GetMapping("/login")
 	public String showLogin() {
 		return "login";
