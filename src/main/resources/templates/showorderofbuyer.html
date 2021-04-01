@@ -42,7 +42,36 @@
 		    left: 0;  
 		    right: 0;  
 		    margin: auto;
-		}
+        }
+        
+        #popup {
+			display: none;
+	        position: fixed;
+			top: 50%;
+	        height:50%;
+            width:20%;
+	        background: white;
+	        margin: 0 auto;
+        }
+        
+        .messageSend {
+            background-color: #4e73df;
+            padding: 2%;
+            border-radius: 5px;
+            margin-bottom: 10px; 
+            margin-left: 40%;
+            width: 60%;
+            color: white;
+        }
+
+        .messageReceive {
+            background-color: gray; 
+            padding: 2%;
+            border-radius: 5px;
+            margin-bottom: 10px; 
+            width: 60%;
+            color: white;
+        }
     </style>
     
     <script type="text/javascript">
@@ -101,7 +130,8 @@
 									'<div class="bg-white py-2 collapse-inner rounded">' +
 								    	'<h6 class="collapse-header">賣家聯絡方式:</h6>' +
 								        '<a class="collapse-item">' + result[i].sellerUser.userDetail.email + '</a><br>' +
-								        '<a class="collapse-item">' + result[i].sellerUser.userDetail.phone + '</a>' +
+                                        '<a class="collapse-item">' + result[i].sellerUser.userDetail.phone + '</a><br>' +
+                                        '<a class="collapse-item" onclick="popup()">進行即時通訊</a>' +
 								    '</div>' +
                 				'</div>' +
                                 '<div id="orderDetail_' + result[i].id + '" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">' +
@@ -162,7 +192,18 @@
     				alert("fail");
     			}
     		});
-    	}
+        }
+        
+        function popup() {
+    		
+    		document.getElementById("popup").style.display = "block";
+			document.getElementById("popup").style.left = (document.body.scrollWidth-document.getElementById("popup").scrollWidth)+"px";
+        }
+        
+        function hide() {
+            
+            document.getElementById("popup").style.display = "none";
+        }
     </script>
 
 </head>
@@ -420,18 +461,14 @@
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <span class="h3 mb-0 text-gray-800" id="summaryOfSearch"></span>
                         <div class="row">
-                        	<a class="btn btn-secondary btn-icon-split" id="lastUpdateTime" onclick="orderBy('lastUpdateTime');">
-                                <span class="text">更新時間</span>
-                            </a>
-                            <a class="btn btn-secondary btn-icon-split" id="price" onclick="orderBy('price');">
-                                <span class="text">價格</span>
+                        	<a class="btn btn-secondary btn-icon-split" id="lastUpdateTime" onclick="popup()">
+                                <span class="text">聊天室</span>
                             </a>
                         </div>
                     </div>
-                
+                </div>
                 <!-- /.container-fluid -->
 
-                </div>
             </div>
             <!-- End of Main Content -->
 
@@ -450,6 +487,8 @@
 
     </div>
     <!-- End of Page Wrapper -->
+
+    
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -475,6 +514,59 @@
             </div>
         </div>
     </div>
+
+    <!-- chat room-->
+    <div class="card mb-4 border-bottom-primary" id="popup">
+        <div class="card-header py-3 h5" style="background-color: #4e73df; color: white; height: 12%;">
+            <span>Chat with </span><span>hyjiang</span>
+            <span style="float: right;">
+                <a href="#" style="color: white;" onclick="hide()">X</a>
+            </span>
+        </div>
+        <div class="card-body" style="height: 78%; overflow-x:hidden;">
+            <div class="messageSend">
+                <h6>eid928: </h6>
+                <h6 style="margin: 0px;">安安</h6>
+            </div>
+            <div class="messageReceive">
+                <h6>hyjiang: </h6>
+                <h6 style="margin: 0px;">fuck you</h6>
+            </div>
+            <div class="messageReceive">
+                <h6>hyjiang: </h6>
+                <h6 style="margin: 0px;">fuck you</h6>
+            </div>
+            <div class="messageReceive">
+                <h6>hyjiang: </h6>
+                <h6 style="margin: 0px;">fuck you</h6>
+            </div>
+            <div class="messageReceive">
+                <h6>hyjiang: </h6>
+                <h6 style="margin: 0px;">fuck you</h6>
+            </div>
+            <div class="messageReceive">
+                <h6>hyjiang: </h6>
+                <h6 style="margin: 0px;">fuck you</h6>
+            </div>
+            <div class="messageReceive">
+                <h6>hyjiang: </h6>
+                <h6 style="margin: 0px;">fuck you</h6>
+            </div>
+        </div>
+        <div style="top: 90%; text-align: center; height: 10%; margin-top: 10px;">
+            <span>
+            <input id="btn-input" type="text" class="input-sm chat_input" placeholder="Write your message here..." style="width: 80%;"/>
+            </span>
+            <span class="input-group-btn">
+            <button class="btn btn-primary btn-sm" id="btn-chat">Send</button>
+            </span>
+        </div>
+        
+    </div>
+    
+    <!-- chat room-->
+
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
