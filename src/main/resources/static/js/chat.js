@@ -1,5 +1,6 @@
-const url = '/gs-guide-websocket';
+const url = '/websocket';
 var stompClient;
+var fromWho;
 
 function connect() {
 	
@@ -8,7 +9,8 @@ function connect() {
 	stompClient = Stomp.over(socket);
 	stompClient.connect({}, function(frame) {
 		console.log('connect to: ' + frame);
-		stompClient.subscribe('/topic/greetings', function (response) {
+		fromWho = frame.headers["user-name"];
+		stompClient.subscribe('/topic/' + fromWho, function (response) {
 			let data = JSON.parse(response.body);
 			console.log(response);
 			console.log(data);
@@ -24,12 +26,12 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function send() {
+function send(message, toWho) {
 
 	var rowData = {
-		'message': 'hello', 
-		'fromLogin': 'eid928'
+		'message': message, 
+		'fromLogin': fromWho
 	};
 	var data = JSON.stringify(rowData);
-	stompClient.send("/app/hello", {}, data);
+	stompClient.send("/app/chat/" + fromWho + "/" + toWho, {}, data);
 }
