@@ -73,8 +73,11 @@
             color: white;
         }
     </style>
-    
+    <script src="js/chat.js"></script>
+	<script src="js/stomp.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
     <script type="text/javascript">
+        var toWho;
     	function showOrderOfBuyer() {
     		
     		var uri = 'http://localhost:8080/orders/asbuyer';
@@ -131,7 +134,7 @@
 								    	'<h6 class="collapse-header">賣家聯絡方式:</h6>' +
 								        '<a class="collapse-item">' + result[i].sellerUser.userDetail.email + '</a><br>' +
                                         '<a class="collapse-item">' + result[i].sellerUser.userDetail.phone + '</a><br>' +
-                                        '<a class="collapse-item" onclick="popup()">進行即時通訊</a>' +
+                                        '<a class="collapse-item" onclick="popup(\'' + result[i].sellerUser.username + '\')">進行即時通訊</a>' +
 								    '</div>' +
                 				'</div>' +
                                 '<div id="orderDetail_' + result[i].id + '" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">' +
@@ -194,8 +197,11 @@
     		});
         }
         
-        function popup() {
-    		
+        function popup(someUser) {
+
+            connect();
+            toWho = someUser;
+            document.getElementById('toWho').innerHTML = toWho;
     		document.getElementById("popup").style.display = "block";
 			document.getElementById("popup").style.left = (document.body.scrollWidth-document.getElementById("popup").scrollWidth)+"px";
         }
@@ -203,6 +209,14 @@
         function hide() {
             
             document.getElementById("popup").style.display = "none";
+        }
+
+        function enter() {
+
+            if(event.keyCode == 13) {
+                return true;
+            };
+            return false;
         }
     </script>
 
@@ -518,44 +532,17 @@
     <!-- chat room-->
     <div class="card mb-4 border-bottom-primary" id="popup">
         <div class="card-header py-3 h5" style="background-color: #4e73df; color: white; height: 12%;">
-            <span>Chat with </span><span>hyjiang</span>
+            <span>Chat with </span><span id="toWho"></span>
             <span style="float: right;">
                 <a href="#" style="color: white;" onclick="hide()">X</a>
             </span>
         </div>
-        <div class="card-body" style="height: 78%; overflow-x:hidden;">
-            <div class="messageSend">
-                <h6>eid928: </h6>
-                <h6 style="margin: 0px;">安安</h6>
-            </div>
-            <div class="messageReceive">
-                <h6>hyjiang: </h6>
-                <h6 style="margin: 0px;">fuck you</h6>
-            </div>
-            <div class="messageReceive">
-                <h6>hyjiang: </h6>
-                <h6 style="margin: 0px;">fuck you</h6>
-            </div>
-            <div class="messageReceive">
-                <h6>hyjiang: </h6>
-                <h6 style="margin: 0px;">fuck you</h6>
-            </div>
-            <div class="messageReceive">
-                <h6>hyjiang: </h6>
-                <h6 style="margin: 0px;">fuck you</h6>
-            </div>
-            <div class="messageReceive">
-                <h6>hyjiang: </h6>
-                <h6 style="margin: 0px;">fuck you</h6>
-            </div>
-            <div class="messageReceive">
-                <h6>hyjiang: </h6>
-                <h6 style="margin: 0px;">fuck you</h6>
-            </div>
+        <div class="card-body" style="height: 78%; overflow-x:hidden;" id="messageContent">
+            
         </div>
         <div style="top: 90%; text-align: center; height: 10%; margin-top: 10px;">
             <span>
-            <input id="btn-input" type="text" class="input-sm chat_input" placeholder="Write your message here..." style="width: 80%;"/>
+            <input id="messageInput" type="text" class="input-sm chat_input" placeholder="Write your message here..." style="width: 80%;" onkeydown="if(enter()) {send(this.value, toWho); this.value=''}"/>
             </span>
             <span class="input-group-btn">
             <button class="btn btn-primary btn-sm" id="btn-chat">Send</button>

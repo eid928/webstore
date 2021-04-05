@@ -1,23 +1,29 @@
 package com.hyjiangd.webstore.rest;
 
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.hyjiangd.webstore.websocketmodel.MessageModel;
+import com.hyjiangd.webstore.entity.ChatMessage;
+import com.hyjiangd.webstore.service.ChatMessageService;
 
-@Controller
+@RestController
 public class MessageController {
 	
+	@Autowired
+	private ChatMessageService chatMessageService;
 	
-	@MessageMapping("/chat/{fromWho}/{toWho}")
-	@SendTo({"/topic/{toWho}", "/topic/{fromWho}"})
-	public MessageModel sendMessage(@DestinationVariable String toWho, @DestinationVariable String fromWho, MessageModel message) throws InterruptedException {
+	@MessageMapping("/chat/{toWho}")
+	@SendTo({"/topic/{toWho}"})
+	public ChatMessage sendMessage(@DestinationVariable String toWho, ChatMessage chatMessage) throws InterruptedException {
 		
-		MessageModel messageModel = new MessageModel();
-		messageModel.setFromLogin(message.getFromLogin());
-		messageModel.setMessage(message.getMessage() + "!!!");
-		return messageModel; 
+		chatMessage.setSendTime(new Date());
+		chatMessageService.save(chatMessage);
+		
+		return chatMessage; 
 	}
 }

@@ -14,6 +14,11 @@ function connect() {
 			let data = JSON.parse(response.body);
 			console.log(response);
 			console.log(data);
+			document.getElementById("messageContent").innerHTML += 
+				'<div class="messageReceive">' +
+					'<h6>' + data.fromUser.username + ': </h6>' +
+					'<h6 style="margin: 0px;">' + data.content + '</h6>' +
+            	'</div>';
 		})
 	});
 }
@@ -29,9 +34,19 @@ function disconnect() {
 function send(message, toWho) {
 
 	var rowData = {
-		'message': message, 
-		'fromLogin': fromWho
+		'fromUser': {
+			'username': fromWho
+		}, 
+		'toUser': {
+			'username': toWho
+		},
+		'content': message
 	};
 	var data = JSON.stringify(rowData);
-	stompClient.send("/app/chat/" + fromWho + "/" + toWho, {}, data);
+	stompClient.send("/app/chat/" + toWho, {}, data);
+	document.getElementById('messageContent').innerHTML +=
+		'<div class="messageSend">' +
+            '<h6>' + fromWho + ': </h6>' +
+            '<h6 style="margin: 0px;">' + message + '</h6>' +
+        '</div>';
 }

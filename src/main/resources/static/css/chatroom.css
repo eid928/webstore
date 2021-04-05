@@ -107,7 +107,7 @@ img {
 
 .msg_container_base::-webkit-scrollbar-track
 {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    
     background-color: #F5F5F5;
 }
 
@@ -119,7 +119,7 @@ img {
 
 .msg_container_base::-webkit-scrollbar-thumb
 {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    
     background-color: #555;
 }
 
