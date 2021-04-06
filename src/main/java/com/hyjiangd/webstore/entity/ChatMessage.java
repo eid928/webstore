@@ -24,12 +24,12 @@ public class ChatMessage {
 	@Column(name = "id")
 	private int id;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "from_username")
 	@JsonIgnoreProperties({"password", "enabled", "authority", "userDetail", "goodsList"})
 	private User fromUser;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "to_username")
 	@JsonIgnoreProperties({"password", "enabled", "authority", "userDetail", "goodsList"})
 	private User toUser;

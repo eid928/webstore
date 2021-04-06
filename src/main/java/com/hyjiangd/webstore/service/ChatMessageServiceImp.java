@@ -18,9 +18,10 @@ public class ChatMessageServiceImp implements ChatMessageService{
 	private ChatMessageDao chatMessageDao;
 	
 	@Override
+	@Transactional
 	public List<ChatMessage> getChatHistory(String fromUsername, String toUsername) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return chatMessageDao.getChatHistory(fromUsername, toUsername);
 	}
 
 	@Override

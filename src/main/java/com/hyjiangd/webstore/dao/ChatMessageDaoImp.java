@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,8 +22,19 @@ public class ChatMessageDaoImp implements ChatMessageDao{
 
 	@Override
 	public List<ChatMessage> getChatHistory(String fromUsername, String toUsername) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Session session = entityManager.unwrap(Session.class);
+		Query<ChatMessage> query = session.createQuery("from ChatMessage where "
+				+ "(fromUser.username = :fromUsername AND toUser.username = :toUsername)"
+				+ "OR "
+				+ "(fromUser.username = :toUsername AND toUser.username = :fromUsername)"
+				+ "order by sendTime asc", ChatMessage.class);
+		
+		query.setParameter("fromUsername", fromUsername);
+		query.setParameter("toUsername", toUsername);
+		List<ChatMessage> list = query.getResultList();
+		
+		return list;
 	}
 
 	@Override
