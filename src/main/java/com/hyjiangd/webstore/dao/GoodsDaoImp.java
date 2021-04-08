@@ -32,9 +32,7 @@ public class GoodsDaoImp implements GoodsDao{
 		
 		Session session = entityManager.unwrap(Session.class);
 		Goods goods = session.get(Goods.class, id);
-		
-		System.out.println("從hibernate session取出來的: " + goods.getLastUpdateTime().getClass());
-		System.out.println("從hibernate session取出來的: " + goods.getLastUpdateTime());
+		System.out.println("在goodsdao中");
 		
 		return goods;
 	}

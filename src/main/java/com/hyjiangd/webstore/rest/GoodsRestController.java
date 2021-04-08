@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,8 +29,10 @@ public class GoodsRestController {
 	private GoodsService goodsService;
 	
 	@GetMapping("/findgoods/{goodsId}")
+	@Cacheable("goods")
 	public Goods showGoodsById(@PathVariable int goodsId) {
 		
+		System.out.println("In goodsRestController");
 		Goods goods = goodsService.findById(goodsId);
 		System.out.println(goods.getLastUpdateTime().getClass());
 		
@@ -63,12 +67,14 @@ public class GoodsRestController {
 	}
 	
 	@PutMapping("/goods")
-	public CrudMsg updateGoods(@RequestBody @Valid Goods goods) {
+	@CachePut(value = "goods", key = "#result.id")
+	public Goods updateGoods(@RequestBody @Valid Goods goods) {
 		
 		goodsService.updateGoods(goods);
 		String msg = "已成功更新商品";
+		CrudMsg crudMsg = new CrudMsg(msg, new Date());
 		
-		return new CrudMsg(msg, new Date());
+		return goodsService.findById(goods.getId());
 	}
 	
 	@DeleteMapping("/goods/{id}")

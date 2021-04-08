@@ -21,6 +21,8 @@ public class GoodsServiceImp implements GoodsService{
 	@Transactional
 	public Goods findById(int id) {
 		
+		System.out.println("在goodsService中");
+		
 		return goodsDao.findById(id);
 	}
 	
