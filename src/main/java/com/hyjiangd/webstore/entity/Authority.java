@@ -1,5 +1,7 @@
 package com.hyjiangd.webstore.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,10 +12,11 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "authorities")
 @JsonIgnoreProperties({"user"})
-public class Authority {
+public class Authority implements Serializable{
 	
 	@Id
 	@Column(name = "username")

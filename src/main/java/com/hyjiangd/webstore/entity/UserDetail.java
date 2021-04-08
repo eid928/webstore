@@ -1,5 +1,7 @@
 package com.hyjiangd.webstore.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,10 +16,11 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "user_details")
 @JsonIgnoreProperties({"id", "user"})
-public class UserDetail {
+public class UserDetail implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
