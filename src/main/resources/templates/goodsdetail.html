@@ -60,7 +60,7 @@
     			dataType: "json",
     			success: function(result) {
     				
-    				console.log(result.lastUpdateTime);
+    				console.log(result);
     				document.getElementById("name").innerHTML = result.name;
     				document.getElementById("inventories").innerHTML = result.inventories;
     				document.getElementById("price").innerHTML = '$' + result.price;
