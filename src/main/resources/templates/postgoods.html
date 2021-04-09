@@ -91,12 +91,10 @@
     			}, 
     			error: function(result) {
     				console.log(result);
-    				alert("fail");
-    				
-    				for (var i = 0; i < result.responseJSON.errors.length; i ++) {
-    					console.log(result.responseJSON.errors[i].field + "ValidationMsg");
-    					document.getElementById(result.responseJSON.errors[i].field + "ValidationMsg").innerHTML = '*' + result.responseJSON.errors[i].defaultMessage;
-    				}
+                    var fields = Object.keys(result.responseJSON.errors);
+                    for (var i = 0; i < fields.length; i ++) {
+                        document.getElementById(fields[i] + 'ValidationMsg').innerHTML = result.responseJSON.errors[fields[i]];
+                    }
     			}
     		});
     	}

@@ -1,12 +1,14 @@
 package com.hyjiangd.webstore.exception;
 
 import java.util.Date;
+import java.util.Map;
 
 public class ExceptionMessage {
 	
 	private int status;
 	private Date timestamp;
 	private String message;
+	private Map<String, String> errors;
 	
 	public ExceptionMessage() {
 		
@@ -39,5 +41,13 @@ public class ExceptionMessage {
 
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public Map<String, String> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(Map<String, String> errors) {
+		this.errors = errors;
 	}
 }

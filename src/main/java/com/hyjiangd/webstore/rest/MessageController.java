@@ -30,6 +30,7 @@ public class MessageController {
 		return chatMessage; 
 	}
 	
+	
 	@GetMapping("/chatmessages")
 	public List<ChatMessage> getChatMessages(@RequestParam String fromUsername, @RequestParam String toUsername) {
 		
