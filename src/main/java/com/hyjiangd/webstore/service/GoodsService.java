@@ -10,6 +10,6 @@ public interface GoodsService {
 	public SearchMsg<Goods> searchByGoodsName(String goodsKeyword, String order, boolean asc, int page);
 	public SearchMsg<Goods> searchByGoodsSeller(String sellerKeyword, String order, boolean asc, int page);
 	public void postGoods(Goods goods);
-	public void updateGoods(Goods goods);
+	public Goods updateGoods(Goods goods);
 	public void deleteGoods(int id);
 }

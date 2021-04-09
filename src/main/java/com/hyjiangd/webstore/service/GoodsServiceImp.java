@@ -4,6 +4,9 @@ package com.hyjiangd.webstore.service;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,7 @@ public class GoodsServiceImp implements GoodsService{
 	
 	@Override
 	@Transactional
+	@Cacheable(value = "goods", key = "#id")
 	public Goods findById(int id) {
 		
 		System.out.println("在goodsService中");
@@ -57,14 +61,18 @@ public class GoodsServiceImp implements GoodsService{
 
 	@Override
 	@Transactional
-	public void updateGoods(Goods goods) {
+	@CachePut(value = "goods", key = "#result.id")
+	public Goods updateGoods(Goods goods) {
 		
 		String usernameOfLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 		goodsDao.update(usernameOfLogin, goods);
+		
+		return goodsDao.findById(goods.getId());
 	}
 
 	@Override
 	@Transactional
+	@CacheEvict(value = "goods", key = "#id")
 	public void deleteGoods(int id) {
 		
 		String usernameOfLogin = SecurityContextHolder.getContext().getAuthentication().getName();
