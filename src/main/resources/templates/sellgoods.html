@@ -46,10 +46,10 @@
 		
     	function getGoodsResult() {
     		var searchKeyword = document.getElementById('loginUsername').innerHTML;
-    		var uri = 'http://localhost:8080/search/goodsseller?sellerKeyword=' + searchKeyword + 
-																		'&asc=' + asc + 
-		   															   '&page=' + page + 
-		 															  '&order=' + order;
+    		var uri = '/search/goodsseller?sellerKeyword=' + searchKeyword + 
+															 '&asc=' + asc + 
+		   												   '&page=' + page + 
+		 												 '&order=' + order;
     		
     		console.log('uri = ' + uri);
     		$.ajax({
@@ -95,7 +95,7 @@
     	
     	function deleteGoods(id) {
     		
-    		var uri = 'http://localhost:8080/goods/' + id;
+    		var uri = '/goods/' + id;
     		
     		$.ajax({
     			type: "DELETE", 

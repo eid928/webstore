@@ -80,7 +80,7 @@
         var toWho;
     	function showOrderOfBuyer() {
     		
-    		var uri = 'http://localhost:8080/orders/asbuyer';
+    		var uri = '/orders/asbuyer';
     		
     		$.ajax({
     			type: "GET", 
@@ -168,7 +168,7 @@
     	
     	function getOrderDetail(id) {
     		
-    		var uri = 'http://localhost:8080/orders/orderdetails/' + id;
+    		var uri = '/orders/orderdetails/' + id;
     		
     		if(document.getElementById("orderDetail_" + id).children[0].value === 'on') {
     			return;

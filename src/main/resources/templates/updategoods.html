@@ -50,7 +50,7 @@
     	function showOriginGoods() {
     		
     		
-    		var uri = 'http://localhost:8080/findgoods/' + id;
+    		var uri = '/findgoods/' + id;
     		
     		$.ajax({
     			type: "GET", 
@@ -85,7 +85,7 @@
 		
     	function updateGoods() {
     		
-    		var uri = 'http://localhost:8080/goods';
+    		var uri = '/goods';
     		var goods = {
     				"id": id,
     			    "name": document.getElementById('name').value,

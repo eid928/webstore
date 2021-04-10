@@ -55,15 +55,15 @@
 	
 		var uri = '';	
 		if(searchBy == "seller") {
-			uri = 'http://localhost:8080/search/goodsseller?sellerKeyword=' + searchKeyword + 
-																	'&asc=' + asc + 
-																   '&page=' + page + 
-																  '&order=' + order;
+			uri = '/search/goodsseller?sellerKeyword=' + searchKeyword + 
+											   '&asc=' + asc + 
+											  '&page=' + page + 
+											 '&order=' + order;
 		} else {
-			uri = 'http://localhost:8080/search/goodsname?goodsKeyword=' + searchKeyword +
-																 '&asc=' + asc + 
-			   													'&page=' + page + 
-			  												   '&order=' + order;
+			uri = '/search/goodsname?goodsKeyword=' + searchKeyword +
+											'&asc=' + asc + 
+			   							   '&page=' + page + 
+			  							  '&order=' + order;
 		}
 		
 		function orderBy(newOrder) {
