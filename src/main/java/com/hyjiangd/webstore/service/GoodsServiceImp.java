@@ -22,7 +22,7 @@ public class GoodsServiceImp implements GoodsService{
 	
 	@Override
 	@Transactional
-	//@Cacheable(value = "goods", key = "#id")
+	@Cacheable(value = "goods", key = "#id")
 	public Goods findById(int id) {
 		
 		System.out.println("在goodsService中");
@@ -61,7 +61,7 @@ public class GoodsServiceImp implements GoodsService{
 
 	@Override
 	@Transactional
-	//@CachePut(value = "goods", key = "#result.id")
+	@CachePut(value = "goods", key = "#result.id")
 	public Goods updateGoods(Goods goods) {
 		
 		String usernameOfLogin = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -72,7 +72,7 @@ public class GoodsServiceImp implements GoodsService{
 
 	@Override
 	@Transactional
-	//@CacheEvict(value = "goods", key = "#id")
+	@CacheEvict(value = "goods", key = "#id")
 	public void deleteGoods(int id) {
 		
 		String usernameOfLogin = SecurityContextHolder.getContext().getAuthentication().getName();
